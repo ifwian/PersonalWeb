@@ -1,0 +1,1475 @@
+/* ============================================================
+   MARIANNE.DEV — main stylesheet
+   ============================================================
+   A plain, hand-written stylesheet. No framework, no build step.
+   Just open any .html file in a browser and it renders.
+
+   How the page is put together:
+     - The <body> is a two-column grid: a fixed sidebar on the
+       left, and the main content panel on the right.
+     - Neither the page nor the body scrolls. The sidebar and the
+       main panel each scroll on their own.
+     - On narrow screens the sidebar becomes a slide-out drawer
+       and a top bar appears with a hamburger button.
+     - The whole design is black and white. Every colour comes
+       from the custom properties in :root below, so changing the
+       theme means editing that one block.
+
+   TABLE OF CONTENTS
+     1.  Theme variables
+     2.  Reset and base element styles
+     3.  Skip link
+     4.  Sidebar
+     5.  Top bar and mobile drawer
+     6.  Main panel and page wrapper
+     7.  Shared page pieces (titles, sections, cards)
+     8.  Home page
+     9.  Skills page
+     10. Projects page
+     11. Gallery page
+     12. Contact page and form
+     13. Footer
+     14. Reveal-on-scroll animation
+     15. Small screens
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   1. THEME VARIABLES
+   ------------------------------------------------------------
+   Custom properties (the --name part) are just named values we
+   can reuse. Change a value here and every place that uses
+   var(--name) updates too. */
+
+:root {
+  /* Colours — the entire palette. Greys only, no colour. */
+  --bg: #000000;         /* page background */
+  --panel: #0a0a0a;      /* card and sidebar-link background */
+  --raised: #111111;     /* card background on hover */
+  --text: #ffffff;       /* main text, and the hover fill */
+  --dim: #9a9a9a;        /* secondary text (paragraphs) */
+  --faint: #6b6b6b;      /* tertiary text (labels, captions) */
+  --line: #222222;       /* borders and dividers */
+  --line-2: #333333;     /* borders that get lighter on hover */
+
+  /* Type */
+  --font: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Motion and shape */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --radius: 4px;
+
+  /* Layout measurements */
+  --sidebar: 272px;      /* width of the desktop sidebar */
+  --gap: 1.25rem;        /* gap inside the card grids */
+  --pad: 1.6rem;         /* padding inside cards and form */
+}
+
+
+/* ------------------------------------------------------------
+   2. RESET AND BASE ELEMENT STYLES
+   ------------------------------------------------------------
+   The star (*) selector matches every element. This block removes
+   the default browser spacing so the layout is predictable. */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+/* Two columns: the sidebar, then everything else. The
+   minmax(0, 1fr) means the right column takes the leftover width
+   and is allowed to shrink below its content size. */
+body {
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text);
+  background: var(--bg);
+  height: 100%;
+  display: grid;
+  grid-template-columns: var(--sidebar) minmax(0, 1fr);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Keyboard users get a visible outline. Mouse users don't see it
+   because this only applies on :focus-visible. */
+:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+/* Highlighted text (double-click a word). */
+::selection {
+  background: var(--text);
+  color: var(--bg);
+}
+
+
+/* ------------------------------------------------------------
+   3. SKIP LINK
+   ------------------------------------------------------------
+   Off-screen until it is focused, so keyboard and screen-reader
+   users can jump past the sidebar straight to the content. */
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 300;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 0.8rem;
+  padding: 0.6rem 1rem;
+}
+
+.skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+}
+
+
+/* ------------------------------------------------------------
+   4. SIDEBAR
+   ------------------------------------------------------------ */
+
+.sidebar {
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+  padding: 1.9rem 1.4rem;
+  background: var(--bg);
+  border-right: 1px solid var(--line);
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-2) var(--bg);
+}
+
+/* Only used in the mobile drawer. Once the drawer slides over the
+   top bar it covers the hamburger button that opened it, so it
+   needs a close button of its own. Hidden on desktop. */
+.side-close {
+  display: none;
+}
+
+/* Firefox scrollbar. */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--line-2);
+  border-radius: 999px;
+}
+
+/* --- brand block --- */
+
+/* The site name at the top of the sidebar, with the Role and Focus
+   lines tucked underneath it. Deliberately no border or background
+   here: these are quiet labels, not a panel. */
+.side-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding-bottom: 1.3rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand-mark {
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* The two lines under the site name, shaped like a file tree:
+
+       ├── Role: CS Student
+       └── Focus: Web & Systems
+
+   white-space: pre stops the browser collapsing the spaces that line
+   the tree up. That is also why each .brand-node must stay on ONE
+   line in the HTML - a line break in the source would show up on
+   the page. Nothing here has a border or a background, so the lines
+   read as plain quiet text. */
+.brand-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.brand-node {
+  white-space: pre;
+  font-size: 0.7rem;
+  line-height: 1.5;
+  color: var(--faint);
+}
+
+/* The ├── and └── connectors, in the darkest grey so they draw the
+   shape without competing with the words beside them. */
+.brand-branch {
+  color: var(--line-2);
+}
+
+/* The value after the label, e.g. "CS Student". */
+.brand-value {
+  color: var(--text);
+}
+
+/* --- navigation links --- */
+
+.side-nav {
+  display: flex;
+  flex-direction: column;
+}
+
+/* One nav item: a number, then a label. The 2px transparent
+   border on the left is the space the active-page white bar
+   later fills in, so hovering never shifts the text sideways. */
+.side-link {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.45rem 0.7rem 0.45rem 0.85rem;
+  font-size: 0.88rem;
+  color: var(--faint);
+  border-left: 2px solid transparent;
+  transition: color 0.18s, background-color 0.18s, border-color 0.18s;
+}
+
+.side-link:hover {
+  color: var(--text);
+  background: var(--panel);
+}
+
+.side-num {
+  font-size: 0.68rem;
+  color: var(--line-2);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.18s;
+}
+
+/* On hover the number brightens slightly, so the row reads as one
+   unit instead of the label alone lighting up. */
+.side-link:hover .side-num {
+  color: var(--faint);
+}
+
+.side-label {
+  flex: 1;
+}
+
+/* The page you are currently on. Each page's HTML marks its own
+   link with aria-current="page", so this highlights itself with
+   no JavaScript. */
+.side-link[aria-current="page"] {
+  color: var(--text);
+  background: var(--panel);
+  border-left-color: var(--text);
+}
+
+.side-link[aria-current="page"] .side-num {
+  color: var(--text);
+}
+
+/* --- social links at the bottom --- */
+
+/* margin-top: auto pushes this to the bottom of the sidebar
+   because everything above it is a flex item. */
+.side-foot {
+  margin-top: auto;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.side-foot-label {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--line-2);
+  margin-bottom: 0.35rem;
+}
+
+.side-foot a {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  font-size: 0.78rem;
+  color: var(--faint);
+  transition: color 0.18s;
+}
+
+.side-foot a:hover {
+  color: var(--text);
+}
+
+/* A ">" prompt in front of every social link. */
+.side-foot a::before {
+  content: ">";
+  color: var(--line-2);
+}
+
+.side-foot a:hover::before {
+  color: var(--text);
+}
+
+
+/* ------------------------------------------------------------
+   5. TOP BAR AND MOBILE DRAWER
+   ------------------------------------------------------------
+   These three rules just hide the mobile-only pieces on desktop.
+   They are turned on again in section 15 (Small screens). */
+
+.topbar {
+  display: none;
+}
+
+.scrim {
+  display: none;
+}
+
+
+/* ------------------------------------------------------------
+   6. MAIN PANEL AND PAGE WRAPPER
+   ------------------------------------------------------------ */
+
+/* The scrolling area on the right. */
+.main {
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-2) var(--bg);
+}
+
+.main::-webkit-scrollbar {
+  width: 10px;
+}
+
+.main::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+.main::-webkit-scrollbar-thumb {
+  background: var(--line-2);
+  border: 3px solid var(--bg);
+  border-radius: 999px;
+}
+
+.main::-webkit-scrollbar-thumb:hover {
+  background: var(--faint);
+}
+
+.page {
+  padding: 3.25rem 0 4.5rem;
+}
+
+/* Centres the content and stops it getting too wide to read.
+   The 4rem is the space kept free at each edge. */
+.wrap {
+  width: min(100% - 4rem, 900px);
+  margin: 0 auto;
+}
+
+/* The home page gets a wider measure. Its hero is two columns, so
+   a 900px limit would squeeze the text into a narrow strip. */
+.page-home .wrap {
+  width: min(100% - 4rem, 1040px);
+}
+
+
+/* ------------------------------------------------------------
+   7. SHARED PAGE PIECES
+   ------------------------------------------------------------ */
+
+.page-head {
+  margin-bottom: 3rem;
+}
+
+.page-title {
+  font-size: clamp(2rem, 5vw, 2.9rem);
+  margin-bottom: 0.9rem;
+}
+
+/* The short intro paragraph under each page title.
+   max-width in "ch" (character) units keeps line length readable
+   regardless of font size. */
+.lede {
+  color: var(--dim);
+  max-width: 62ch;
+}
+
+/* A link inside a paragraph: underlined with a border so it reads
+   as a link without leaving the greyscale palette. */
+.lede a {
+  color: var(--text);
+  border-bottom: 1px solid var(--line-2);
+  transition: border-color 0.2s;
+}
+
+.lede a:hover {
+  border-bottom-color: var(--text);
+}
+
+code {
+  font-family: inherit;
+  font-size: 0.92em;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 0.1em 0.4em;
+}
+
+/* The small breadcrumb line above a page title, e.g. ~/projects.
+   The "::before" adds the "~/" part so the HTML stays clean. */
+.path {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.74rem;
+  color: var(--faint);
+  margin-bottom: 0.7rem;
+}
+
+.path::before {
+  content: "~/";
+  color: var(--line-2);
+}
+
+.section {
+  margin-bottom: 3.5rem;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+/* The small uppercase heading above each block of content. */
+.section-title {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--faint);
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 1.5rem;
+}
+
+/* The grey "02 —" in front of a numbered section title. Kept on its
+   own rule so the numbers can be left out without touching the
+   title styling. */
+.section-index {
+  color: var(--line-2);
+}
+
+/* A generic bordered card. Used for the Degree and Certifications
+   blocks on the home page. */
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--pad);
+  transition: border-color 0.22s, transform 0.22s, background-color 0.22s;
+}
+
+.card:hover {
+  border-color: var(--line-2);
+  background: var(--raised);
+  transform: translateY(-2px);
+}
+
+.card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.card p {
+  color: var(--dim);
+  font-size: 0.88rem;
+}
+
+/* The `.btn` class is shared by all buttons. Details in section 8. */
+
+
+/* ------------------------------------------------------------
+   8. HOME PAGE
+   ------------------------------------------------------------ */
+
+.hero {
+  padding-bottom: 3rem;
+  margin-bottom: 3.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+/* Two columns: the photo on the left, the name and text on the
+   right. The left column matches the photo frame exactly, so there
+   is no empty gap beside the image.
+
+   align-items: start lines the two columns up along their top edges,
+   so the photo starts level with the top of the name. Without it the
+   grid would default to stretching, which is not what we want here. */
+.hero-split {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  align-items: start;
+  gap: 2.5rem;
+  margin-bottom: 2.75rem;
+}
+
+.hero-media {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+/* The frame around the profile photo, a rounded square at 200 x 200.
+
+   The photo is 1024 x 1024, which is square as well, so the frame and
+   the picture are the same shape. Nothing is cropped and nothing is
+   padded out. (The 1px border takes a pixel off each edge, which
+   leaves the inner box at 198 x 198 — still exactly square, so it
+   still matches.)
+
+   border-radius: 12px takes the sharp corners off, and overflow: hidden
+   is what makes those rounded corners clip the photo as well, not just
+   the outline.
+
+   The frame and the photo are two separate things on purpose: this
+   div owns the size, the outline and the corners, and the <img> inside
+   it fills whatever space it is given, so the picture can never
+   stretch or squash the frame.
+
+   The border is 1px solid white, the same weight as the borders
+   elsewhere on the site but the light colour instead of var(--line).
+   var(--text) is #ffffff.
+
+   The hero-split grid column above is the same width, so there is no
+   empty gap beside the image. Keep the two numbers the same. */
+.avatar-frame {
+  width: 200px;
+  height: 200px;
+  border: 3px solid var(--text);
+  border-radius: 12px;
+  background: var(--panel);
+  overflow: hidden;
+  border-color:rgba(62, 58, 58, 0.9)
+}
+
+.avatar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* The small caption under the photo. Uppercased by CSS, so the text
+   in the HTML stays lowercase. text-align: center centres it under
+   the square frame rather than lining it up with the left edge. */
+.hero-media-tag {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  text-align: center;
+  color: var(--faint);
+}
+
+/* min-width: 0 lets the text column shrink instead of forcing the
+   grid wider than the screen. */
+.hero-body {
+  min-width: 0;
+}
+
+.hero-name {
+  font-size: clamp(1.9rem, 5.4vw, 2.85rem);
+  margin-bottom: 0.55rem;
+}
+
+.hero-bio {
+  color: var(--dim);
+  max-width: 68ch;
+  margin-bottom: 1.6rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* --- buttons --- */
+
+/* Every button on the site uses this one class.
+   Normal state: black fill, hairline border, white text. The
+   border is what makes a black button visible on a black page.
+   Hover state: flips to a solid white block with black text. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.7rem 1.4rem;
+  background: var(--bg);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+  color: var(--text);
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.btn:hover {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--bg);
+  transform: translateY(-1px);
+}
+
+/* --- "At a glance" grid --- */
+
+/* A row of small labelled boxes: a key (small caps), a value
+   (large), and an optional note. auto-fit + minmax makes the row
+   reflow into as many equal columns as fit. */
+.fact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: var(--gap);
+}
+
+.fact-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  padding: 1.1rem;
+}
+
+.fact-key {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--faint);
+}
+
+.fact-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.fact-note {
+  font-size: 0.74rem;
+  color: var(--dim);
+}
+
+/* --- tree cards (role & focus, stack & tools, currently) --- */
+
+/* One component, used three times on the home page. Each card has a
+   small grey title bar across the top, then a few lines of text
+   arranged like a file tree:
+
+       ├── Role: CS Student
+       └── Tools: Git
+
+   The box, the title bar and the lines are all plain elements. The
+   only trick is white-space: pre on .tree-line, which stops the
+   browser from collapsing the spaces that line the tree up. That is
+   also why every .tree-line must stay on ONE line in the HTML - a
+   line break in the source would show up in the output. */
+.tree-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  overflow: hidden;
+}
+
+/* The title bar. */
+.tree-card-title {
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--faint);
+}
+
+/* The box the lines sit in. */
+.tree-card-body {
+  padding: 0.85rem 0.9rem;
+}
+
+/* One line: the connector, the label, then the value. */
+.tree-line {
+  white-space: pre;
+  font-size: 0.78rem;
+  line-height: 1.85;
+  color: var(--dim);
+}
+
+/* The ├── and └── connectors, in the darkest grey so they draw the
+   shape without competing with the words. */
+.tree-branch {
+  color: var(--line-2);
+}
+
+/* The label before the colon, e.g. "Role" or "Languages". */
+.tree-key {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* A heading in the same style as .section-title but sitting
+   inside a section, so it carries its own top margin. */
+.sub-title {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--faint);
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--line);
+  margin: 2rem 0 1.25rem;
+}
+
+/* --- "Background" cards --- */
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: var(--gap);
+}
+
+/* The subtitle line on a card: the one bold line under the title. */
+.fact-what {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin: 0.15rem 0;
+}
+
+/* The short note under a card's subtitle. The hairline above it
+   keeps it a clear step below. */
+.fact-note-text {
+  font-size: 0.82rem;
+  color: var(--dim);
+  margin-top: 0.7rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--line);
+}
+
+/* --- small pill tags --- */
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  font-size: 0.78rem;
+  color: var(--dim);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tag:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+
+
+/* ------------------------------------------------------------
+   9. SKILLS PAGE
+   ------------------------------------------------------------ */
+
+/* minmax(170px, ...) is chosen so seven cards break into 4 + 3
+   rows rather than leaving the seventh alone on its own row. */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: var(--gap);
+}
+
+.skill {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.15rem 0.8rem;
+  text-align: center;
+  transition: border-color 0.22s, background-color 0.22s, transform 0.22s;
+}
+
+.skill:hover {
+  border-color: var(--line-2);
+  background: var(--raised);
+  transform: translateY(-2px);
+}
+
+/* A short text symbol standing in for an icon, e.g. "</>" or "#". */
+.skill-icon {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.skill-name {
+  font-size: 0.78rem;
+  color: var(--dim);
+}
+
+/* The confidence label, e.g. "Daily" or "Learning". */
+.skill-level {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--faint);
+}
+
+
+/* ------------------------------------------------------------
+   10. PROJECTS PAGE
+   ------------------------------------------------------------ */
+
+.project-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+/* One project: a thumbnail on the left, text on the right.
+   Unlike the cards above, this one does not lift on hover. */
+.project {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.1rem;
+  transition: border-color 0.22s, background-color 0.22s;
+}
+
+.project:hover {
+  border-color: var(--line-2);
+  background: var(--raised);
+}
+
+/* The screenshot placeholder on the left of a project.
+   flex: 0 0 200px stops it being squeezed by the text beside it.
+   200 x 118 is the shape of the placeholder SVG, and object-fit:
+   cover means a real screenshot can be any shape and still fill it. */
+.project-thumb {
+  flex: 0 0 200px;
+  width: 200px;
+  height: 118px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--bg);
+  transition: border-color 0.22s;
+}
+
+.project:hover .project-thumb {
+  border-color: var(--line-2);
+}
+
+.project-body {
+  flex: 1;
+  min-width: 0;
+}
+
+/* The small "[ PROJECT_01 ]" label above a project title. */
+.project-index {
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  color: var(--faint);
+  margin-bottom: 0.35rem;
+}
+
+/* The "[ View Code -> ]" link at the foot of a project. It is
+   styled like a button but is only a link. */
+.project-link {
+  display: inline-block;
+  margin-top: 0.9rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+  padding: 0.4rem 0.85rem;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.project-link:hover {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--bg);
+}
+
+/* Title on the left, tags and status on the right. */
+.project-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.project-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+/* Tighter version of .tag-row for inside a project row. */
+.project-tags {
+  gap: 0.4rem;
+}
+
+.project-tags .tag {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.6rem;
+}
+
+/* The status pill, e.g. "In progress" or "Done". */
+.badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  white-space: nowrap;
+}
+
+/* A finished project gets the same inverted fill a button has on
+   hover. The HTML marks it with data-state="done". */
+.badge[data-state="done"] {
+  color: var(--bg);
+  background: var(--text);
+  border-color: var(--text);
+}
+
+.project p {
+  color: var(--dim);
+  font-size: 0.87rem;
+}
+
+
+/* ------------------------------------------------------------
+   11. GALLERY PAGE
+   ------------------------------------------------------------ */
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: var(--gap);
+}
+
+/* One photo with a caption underneath. It is a <figure>, not a
+   link — there is nothing to click — so hover only lightens the
+   border instead of lifting. */
+.shot {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  overflow: hidden;
+  transition: border-color 0.22s;
+}
+
+.shot:hover {
+  border-color: var(--line-2);
+}
+
+/* aspect-ratio reserves the right shape before the file loads,
+   so the grid does not jump around while images download. */
+.shot img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.shot figcaption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem 0.9rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.74rem;
+  color: var(--dim);
+}
+
+/* The photo number, kept on a fixed width by tabular-nums so the
+   numbers line up down the column. */
+.shot-index {
+  color: var(--line-2);
+  font-size: 0.68rem;
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ------------------------------------------------------------
+   12. CONTACT PAGE AND FORM
+   ------------------------------------------------------------ */
+
+/* Two columns: the list of links, then the form. */
+.contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.contact-list {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem var(--pad);
+  transition: background-color 0.2s;
+}
+
+/* A hairline between rows, but not above the first one. */
+.contact-row + .contact-row {
+  border-top: 1px solid var(--line);
+}
+
+.contact-row:hover {
+  background: var(--panel);
+}
+
+/* The inline SVG icons. They inherit colour from the row, and
+   flex-shrink: 0 stops them being squashed by a long address. */
+.contact-row svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--faint);
+}
+
+.contact-label {
+  display: block;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--faint);
+}
+
+.contact-value {
+  font-size: 0.85rem;
+  word-break: break-all;
+}
+
+form {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--pad);
+}
+
+/* Name and email sit side by side; the message field is full
+   width on its own. */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+.field label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--faint);
+  margin-bottom: 0.4rem;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.88rem;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.65rem 0.8rem;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 7.5rem;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--line-2);
+}
+
+.field input:hover,
+.field textarea:hover {
+  border-color: var(--line-2);
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--text);
+}
+
+/* A field that failed validation gets a dashed border. The
+   JavaScript sets aria-invalid="true" when that happens. */
+.field input[aria-invalid="true"],
+.field textarea[aria-invalid="true"] {
+  border-style: dashed;
+  border-color: var(--text);
+}
+
+/* Error text is hidden until JavaScript adds the .show class. */
+.error {
+  display: none;
+  font-size: 0.75rem;
+  color: var(--text);
+  margin-top: 0.3rem;
+}
+
+.error.show {
+  display: block;
+}
+
+.error::before {
+  content: "! ";
+  color: var(--faint);
+}
+
+
+/* ------------------------------------------------------------
+   13. FOOTER
+   ------------------------------------------------------------ */
+
+.footer {
+  margin-top: 4rem;
+  padding: 1.5rem 0 2.5rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.76rem;
+  color: var(--faint);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.footer a:hover {
+  color: var(--text);
+}
+
+
+/* ------------------------------------------------------------
+   14. REVEAL ON SCROLL
+   ------------------------------------------------------------
+   Sections marked .reveal fade up as they scroll into view.
+
+   These rules only apply when the page has a .js class on <html>,
+   which a tiny script in each page's <head> adds. If JavaScript
+   never runs, .js is never added, so the content stays visible
+   instead of being stuck at opacity 0. */
+
+/* Start state: invisible and nudged 12px down. */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
+}
+
+/* Final state, once the JavaScript adds .in. */
+.js .reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Respect the operating system's "reduce motion" setting: show
+   everything immediately and turn off all animation. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+/* ------------------------------------------------------------
+   15. SMALL SCREENS
+   ------------------------------------------------------------
+   Everything below applies at 900px wide or less. On a phone the
+   sidebar becomes a slide-out drawer, a top bar appears, and the
+   two-column layouts stack into one. */
+
+@media (max-width: 900px) {
+
+  /* Drop the sidebar column; the drawer overlays instead. */
+  body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* --- top bar --- */
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 120;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 1.1rem;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .topbar-brand {
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+
+  .topbar-path {
+    margin-left: auto;
+    font-size: 0.72rem;
+    color: var(--faint);
+  }
+
+  .topbar-path::before {
+    content: "~/";
+    color: var(--line-2);
+  }
+
+  /* --- hamburger button ---
+     Three stacked bars. Each is an empty <span> whose height and
+     background are set here, so no image is needed. */
+  .menu-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 22px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  .menu-btn span {
+    display: block;
+    height: 2px;
+    background: var(--text);
+    transition: transform 0.28s var(--ease), opacity 0.2s;
+  }
+
+  /* Open state: the script adds .nav-open to <body>, which slides
+     the top and bottom bars together into an X and hides the
+     middle one. */
+  body.nav-open .menu-btn span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  body.nav-open .menu-btn span:nth-child(2) {
+    opacity: 0;
+  }
+
+  body.nav-open .menu-btn span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  /* --- the drawer ---
+     translateX(-100%) pushes it off-screen to the left. When
+     .nav-open is on, transform: none slides it back in. */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: min(82vw, 300px);
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.3s var(--ease);
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
+  }
+
+  body.nav-open .sidebar {
+    transform: none;
+  }
+
+  /* Close button, shown only inside the drawer. */
+  .side-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 1.5rem;
+    right: 1.1rem;
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+    color: var(--faint);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    transition: color 0.18s, border-color 0.18s;
+  }
+
+  .side-close:hover {
+    color: var(--text);
+    border-color: var(--line-2);
+  }
+
+  /* --- dimmed overlay behind the open drawer --- */
+
+  .scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+    background: rgba(0, 0, 0, 0.65);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s var(--ease), visibility 0.3s;
+  }
+
+  body.nav-open .scrim {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* --- stacking the page layouts --- */
+
+  .page {
+    padding: 2.25rem 0 3rem;
+  }
+
+  .wrap {
+    width: min(100% - 2.5rem, 900px);
+  }
+
+  .page-home .wrap {
+    width: min(100% - 2.5rem, 1040px);
+  }
+
+/* The hero stacks with the photo above the name, so the reading
+     order stays portrait -> name -> bio.
+     The photo frame is not resized here on purpose: it keeps its
+     200 x 200 size on a phone as well as a desktop. A phone at
+     320px wide still leaves 280px of content, so 200px fits. */
+  .hero-split {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+  }
+
+  .contact-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+  }
+
+  /* --- projects stack vertically --- */
+
+  .project {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  /* Full width on a phone. aspect-ratio repeats the 200 x 118 shape
+     from the desktop rule so the placeholder is not distorted. */
+  .project-thumb {
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 200 / 118;
+  }
+
+  .project-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .project-meta {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  /* --- form goes to one field per row --- */
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+/* Extra-narrow screens: the card grids drop to a single column so
+   cards are not squeezed too small to read. */
+@media (max-width: 520px) {
+  .gallery-grid,
+  .fact-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

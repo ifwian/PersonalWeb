@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marianne Napaño | Computer Science Student &amp; Aspiring Web Developer</title>
+  <meta name="description" content="Portfolio of Marianne Napaño, a Computer Science student and aspiring web developer based in Calamba, Philippines.">
+  <link rel="icon" type="image/jpeg" href="images/portrait.jpg">
+  <!-- Marks the page as JavaScript-enabled. The CSS uses .js to decide
+       whether to hide the .reveal sections: without it they stay
+       visible, so nothing is ever lost if this script is blocked. -->
+  <script>document.documentElement.classList.add('js');</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- The ?v=3 is a cache-buster: the number tells the browser this
+       is a newer version of the file, so a saved copy in the cache
+       is not reused. Bump the number after editing style.css, or
+       the page will keep showing the old version. -->
+  <link rel="stylesheet" href="style.css?v=14">
+</head>
+<body>
+
+  <!-- Stays off-screen until it is focused, so keyboard users can
+       jump straight past the menu. -->
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- The left sidebar. Always visible on desktop; on phones it
+       slides in and out as a drawer (see script.js section 2). -->
+  <aside class="sidebar" id="sidebar">
+    <button class="side-close" aria-label="Close menu">&#10005;</button>
+
+    <!-- The site name at the top of the sidebar, with the Role and
+         Focus lines tucked underneath it.
+         IMPORTANT: each .brand-node must stay on ONE line in this file.
+         The CSS uses white-space: pre so the tree lines up, and a line
+         break here would show up on the page. -->
+    <div class="side-brand">
+      <span class="brand-mark">MARIANNE.DEV</span>
+      <div class="brand-tree">
+        <span class="brand-node"><span class="brand-branch">├──</span> Role: <span class="brand-value">CS Student</span></span>
+        <span class="brand-node"><span class="brand-branch">└──</span> Focus: <span class="brand-value">Web &amp; Systems</span></span>
+      </div>
+    </div>
+
+    <!-- The five pages of the site, numbered like a table of contents.
+         Each page marks its own link with aria-current="page", and that
+         is what highlights it in the CSS. -->
+    <nav class="side-nav" aria-label="Primary">
+      <a href="index.html" class="side-link" aria-current="page">
+        <span class="side-num">01</span><span class="side-label">Home</span>
+      </a>
+      <a href="skills.html" class="side-link">
+        <span class="side-num">02</span><span class="side-label">Skills</span>
+      </a>
+      <a href="projects.html" class="side-link">
+        <span class="side-num">03</span><span class="side-label">Projects</span>
+      </a>
+      <a href="gallery.html" class="side-link">
+        <span class="side-num">04</span><span class="side-label">Gallery</span>
+      </a>
+      <a href="contact.html" class="side-link">
+        <span class="side-num">05</span><span class="side-label">Contact</span>
+      </a>
+    </nav>
+
+    <!-- Sits at the bottom of the sidebar because of margin-top: auto. -->
+    <div class="side-foot">
+      <span class="side-foot-label">Elsewhere</span>
+      <a href="https://github.com/ifwian" target="_blank" rel="noopener noreferrer">github.com/ifwian</a>
+      <a href="https://www.linkedin.com/in/ifwiannn/" target="_blank" rel="noopener noreferrer">linkedin.com/in/ifwiannn</a>
+      <a href="https://www.instagram.com/ifwiannn/" target="_blank" rel="noopener noreferrer">instagram.com/ifwiannn</a>
+      <a href="mailto:iandevsu@gmail.com">iandevsu@gmail.com</a>
+    </div>
+  </aside>
+
+  <!-- Dimmed overlay behind the open drawer on phones. Tapping it
+       closes the menu. -->
+  <div class="scrim" aria-hidden="true"></div>
+
+  <!-- Only appears on phones. The button is the hamburger: three
+       empty spans styled into three bars by the CSS. -->
+  <header class="topbar">
+    <button class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="topbar-brand">MARIANNE.DEV</a>
+    <span class="topbar-path">marianne</span>
+  </header>
+
+  <!-- The scrolling panel on the right. The id="main" is what the
+       "Skip to content" link at the top of the page jumps to. -->
+  <main class="main" id="main">
+    <!-- The extra class "page-home" gives this page a wider text
+         column than the other pages, because the hero below is
+         two columns wide. -->
+    <div class="page page-home">
+
+      <!-- Centres the content and caps its width. -->
+      <div class="wrap">
+
+        <!-- The intro block: profile photo on the left, name and bio
+             on the right. This page is the "about me" page.
+             The "reveal" class makes the section fade in on scroll
+             (see script.js section 3). -->
+        <section class="hero reveal">
+          <div class="hero-split">
+            <div class="hero-media">
+<!-- The frame is sized by the CSS (a 200 x 200 rounded square) and
+                   holds the photo, which fills it. The caption sits
+                   directly underneath, centred on the frame. -->
+              <div class="avatar-frame">
+                <img src="images/marianneid.png" alt="Marianne Napaño" class="avatar">
+              </div>
+              <span class="hero-media-tag">marianne / 2026</span>
+            </div>
+
+            <div class="hero-body">
+              <h1 class="hero-name">Marianne Napaño</h1>
+
+              <!-- Kept short on purpose. The Role and Focus lines sit in
+                   the sidebar, and the facts about study, location and
+                   tooling each have their own section further down, so
+                   none of them are repeated here. -->
+              <p class="hero-bio">
+                I'm a second-year Computer Science student, and I build small
+                web projects to learn. I like taking a thing apart to see how
+                it works, then putting it back together so I understand every
+                part. Most of what I've made started as something small I
+                wanted to finish.
+              </p>
+
+              <!-- Both buttons use the same .btn class, so they look
+                   identical. Only their link target is different. -->
+              <div class="hero-actions">
+                <a href="projects.html" class="btn">See the work</a>
+                <a href="contact.html" class="btn">Get in touch</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Three quick facts. Each box has a small label (the key),
+               the fact itself (the value), and a line of detail. -->
+          <h2 class="section-title"><span class="section-index">01 &mdash;</span> At a glance</h2>
+          <div class="fact-grid">
+            <div class="fact-card">
+              <span class="fact-key">based in</span>
+              <span class="fact-value">Calamba</span>
+              <span class="fact-note">Laguna, Philippines</span>
+            </div>
+            <div class="fact-card">
+              <span class="fact-key">studying</span>
+              <span class="fact-value">2nd year</span>
+              <span class="fact-note">of a four-year programme</span>
+            </div>
+            <div class="fact-card">
+              <span class="fact-key">building</span>
+              <span class="fact-value">5 projects</span>
+              <span class="fact-note">Each one listed on the projects page</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 02 · The toolkit, as a tree card. Languages and tools only. -->
+        <section class="section reveal">
+          <h2 class="section-title"><span class="section-index">02 &mdash;</span> Stack &amp; Tools</h2>
+          <div class="tree-card">
+            <div class="tree-card-title">stack.txt</div>
+            <div class="tree-card-body">
+              <!-- Keep each .tree-line on ONE line - see the note in the hero. -->
+              <p class="tree-line"><span class="tree-branch">├──</span> <span class="tree-key">Languages:</span> HTML/CSS, JavaScript, Python, SQL, C++, Java</p>
+              <p class="tree-line"><span class="tree-branch">└──</span> <span class="tree-key">Tools:</span> Git, GitHub, VS Code</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 03 · What I am learning at the moment. Nothing here appears
+             in any other section: the degree, the certifications, the
+             languages and the hobbies are all written down elsewhere. -->
+        <section class="section reveal">
+          <h2 class="section-title"><span class="section-index">03 &mdash;</span> Currently Learning</h2>
+          <div class="tree-card">
+            <div class="tree-card-title">now.txt</div>
+            <div class="tree-card-body">
+              <!-- Keep each .tree-line on ONE line - see the note in the hero. -->
+              <p class="tree-line"><span class="tree-branch">├──</span> <span class="tree-key">Exploring:</span> how memory actually works &mdash; pointers, allocation, and what a stack frame is</p>
+              <p class="tree-line"><span class="tree-branch">├──</span> <span class="tree-key">Reading:</span> Clean Code, and taking better notes while I read</p>
+              <p class="tree-line"><span class="tree-branch">└──</span> <span class="tree-key">Building:</span> this site, second version</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- The record: what was studied, and what was certified.
+             Each card is three lines: the title, one subtitle, one
+             short note. -->
+        <section class="section reveal">
+          <h2 class="section-title">Background</h2>
+          <div class="info-grid">
+            <div class="card">
+              <h3>Degree</h3>
+              <p class="fact-what">2025 &mdash; Present | BS in Computer Science, City College of Calamba</p>
+              <p class="fact-note-text">
+                Focusing on core computer science fundamentals and practical
+                programming.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Certifications</h3>
+              <p class="fact-what">HackerRank &mdash; Basic to Intermediate</p>
+              <p class="fact-note-text">
+                Verified core programming logic through hands-on coding
+                challenges.
+              </p>
+            </div>
+          </div>
+
+          <h3 class="sub-title">Outside the IDE</h3>
+          <!-- Three hobbies, as plain text pills. .tag-row wraps them
+               onto another line if they run out of space. -->
+          <div class="tag-row">
+            <span class="tag">Photography</span>
+            <span class="tag">Badminton</span>
+            <span class="tag">Music</span>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- The <span id="year"> is left empty on purpose. script.js
+           fills it in with the current year, so this never goes
+           out of date and never needs editing by hand. -->
+      <footer class="footer wrap">
+        <span>&copy; <span id="year"></span> Marianne Napaño</span>
+        <span>Built by hand &mdash; no frameworks, no build step</span>
+      </footer>
+    </div>
+  </main>
+
+  <!-- One script for the whole site. It is loaded at the end of the
+       body so the HTML is already parsed by the time it runs. -->
+  <script src="script.js"></script>
+</body>
+</html>

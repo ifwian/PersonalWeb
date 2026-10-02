@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | Marianne Napaño</title>
+  <meta name="description" content="Get in touch with Marianne Napaño about internships, freelance work, or a question about a project.">
+  <link rel="icon" type="image/jpeg" href="images/portrait.jpg">
+  <!-- Marks the page as JavaScript-enabled, so the CSS knows it is
+       safe to hide the .reveal sections until they scroll into view. -->
+  <script>document.documentElement.classList.add('js');</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css?v=14">
+</head>
+<body>
+
+  <!-- Stays off-screen until it is focused, so keyboard users can
+       jump straight past the menu. -->
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- The left sidebar. Always visible on desktop; on phones it
+       slides in and out as a drawer (see script.js section 2). -->
+  <aside class="sidebar" id="sidebar">
+    <button class="side-close" aria-label="Close menu">&#10005;</button>
+
+    <!-- The site name at the top of the sidebar, with the Role and
+         Focus lines tucked underneath it.
+         IMPORTANT: each .brand-node must stay on ONE line in this file.
+         The CSS uses white-space: pre so the tree lines up, and a line
+         break here would show up on the page. -->
+    <div class="side-brand">
+      <span class="brand-mark">MARIANNE.DEV</span>
+      <div class="brand-tree">
+        <span class="brand-node"><span class="brand-branch">├──</span> Role: <span class="brand-value">CS Student</span></span>
+        <span class="brand-node"><span class="brand-branch">└──</span> Focus: <span class="brand-value">Web &amp; Systems</span></span>
+      </div>
+    </div>
+
+
+    <!-- The five pages of the site, numbered like a table of contents.
+         Each page marks its own link with aria-current="page", and that
+         is what highlights it in the CSS. -->
+    <nav class="side-nav" aria-label="Primary">
+      <a href="index.html" class="side-link">
+        <span class="side-num">01</span><span class="side-label">Home</span>
+      </a>
+      <a href="skills.html" class="side-link">
+        <span class="side-num">02</span><span class="side-label">Skills</span>
+      </a>
+      <a href="projects.html" class="side-link">
+        <span class="side-num">03</span><span class="side-label">Projects</span>
+      </a>
+      <a href="gallery.html" class="side-link">
+        <span class="side-num">04</span><span class="side-label">Gallery</span>
+      </a>
+      <a href="contact.html" class="side-link" aria-current="page">
+        <span class="side-num">05</span><span class="side-label">Contact</span>
+      </a>
+    </nav>
+
+    <!-- Sits at the bottom of the sidebar because of margin-top: auto. -->
+    <div class="side-foot">
+      <span class="side-foot-label">Elsewhere</span>
+      <a href="https://github.com/ifwian" target="_blank" rel="noopener noreferrer">github.com/ifwian</a>
+      <a href="https://www.linkedin.com/in/ifwiannn/" target="_blank" rel="noopener noreferrer">linkedin.com/in/ifwiannn</a>
+      <a href="https://www.instagram.com/ifwiannn/" target="_blank" rel="noopener noreferrer">instagram.com/ifwiannn</a>
+      <a href="mailto:iandevsu@gmail.com">iandevsu@gmail.com</a>
+    </div>
+  </aside>
+
+  <!-- Dimmed overlay behind the open drawer on phones. Tapping it
+       closes the menu. -->
+  <div class="scrim" aria-hidden="true"></div>
+
+  <!-- Only appears on phones. The button is the hamburger: three
+       empty spans styled into three bars by the CSS. -->
+  <header class="topbar">
+    <button class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="topbar-brand">MARIANNE.DEV</a>
+    <span class="topbar-path">contact</span>
+  </header>
+
+  <!-- The scrolling panel on the right. The id="main" is what the
+       "Skip to content" link at the top of the page jumps to. -->
+  <main class="main" id="main">
+    <div class="page">
+
+      <!-- Centres the content and caps its width. -->
+      <div class="wrap">
+
+        <!-- The block at the top of every page: breadcrumb, title,
+             intro line. -->
+        <header class="page-head reveal">
+          <p class="path"><span>contact</span></p>
+          <h1 class="page-title">Get in touch</h1>
+          <p class="lede">
+            Internships, freelance work, or a question about something I built —
+            all welcome.
+          </p>
+        </header>
+
+        <!-- Two columns: my contact details, then the form. -->
+        <section class="contact-grid">
+          <div class="contact-list reveal">
+            <!-- Each row is a link with an inline SVG icon. The
+                 icons are drawn in the browser, so there are no icon
+                 files to load, and they follow the page's colours.
+                 aria-hidden="true" hides them from screen readers,
+                 which already have the text label beside them. -->
+            <a href="mailto:iandevsu@gmail.com" class="contact-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="4" width="20" height="16" rx="2.5"/>
+                <path d="m3 6.5 8.4 6a1 1 0 0 0 1.2 0L21 6.5"/>
+              </svg>
+              <span>
+                <span class="contact-label">Email</span>
+                <span class="contact-value">iandevsu@gmail.com</span>
+              </span>
+            </a>
+
+            <a href="https://github.com/ifwian" target="_blank" rel="noopener noreferrer" class="contact-row">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 .5C5.73.5.5 5.73.5 12c0 5.02 3.26 9.28 7.78 10.78.57.1.78-.25.78-.55v-2.15c-3.16.34-3.98-1.37-4.24-1.97-.14-.36-.75-1.48-1.28-1.78-.44-.24-1.06-.82-.02-.84.98-.01 1.68.9 1.91 1.28 1.12 1.88 2.91 1.35 3.62 1.02.11-.79.44-1.35.8-1.66-2.79-.32-5.7-1.4-5.7-6.19 0-1.36.49-2.48 1.28-3.36-.14-.32-.6-1.61.13-3.35 0 0 1.05-.34 3.44 1.28a11.86 11.86 0 0 1 6.26 0c2.39-1.62 3.44-1.28 3.44-1.28.73 1.74.27 3.03.13 3.35.8.88 1.28 1.99 1.28 3.36 0 4.8-2.92 5.87-5.71 6.18.45.39.84 1.15.84 2.33v3.45c0 .3.21.66.79.55A11.51 11.51 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/>
+              </svg>
+              <span>
+                <span class="contact-label">GitHub</span>
+                <span class="contact-value">github.com/ifwian</span>
+              </span>
+            </a>
+
+            <a href="https://www.linkedin.com/in/ifwiannn/" target="_blank" rel="noopener noreferrer" class="contact-row">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM2.98 9h4v12h-4V9Zm7 0h3.83v1.64h.05c.53-1 1.85-2.06 3.8-2.06 4.07 0 4.82 2.68 4.82 6.16V21h-4v-5.36c0-1.28-.02-2.92-1.78-2.92-1.78 0-2.06 1.39-2.06 2.83V21h-4V9Z"/>
+              </svg>
+              <span>
+                <span class="contact-label">LinkedIn</span>
+                <span class="contact-value">linkedin.com/in/ifwiannn</span>
+              </span>
+            </a>
+
+            <a href="https://www.instagram.com/ifwiannn/" target="_blank" rel="noopener noreferrer" class="contact-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="5"/>
+                <circle cx="12" cy="12" r="4"/>
+                <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
+              </svg>
+              <span>
+                <span class="contact-label">Instagram</span>
+                <span class="contact-value">instagram.com/ifwiannn</span>
+              </span>
+            </a>
+          </div>
+
+          <!-- The contact form.
+               The for="..." on each label matches the input's id, so
+               clicking the label puts the cursor in that box.
+               The empty <p class="error"> under each field is where
+               script.js puts the error message. It is hidden by CSS
+               until the .show class is added.
+               novalidate turns off the browser's own pop-up
+               messages so the form can use its own styling. -->
+          <form id="contact-form" class="reveal" novalidate>
+            <!-- Name and email share one row on desktop. -->
+            <div class="form-row">
+              <div class="field">
+                <label for="name">Your name</label>
+                <input type="text" id="name" name="name" placeholder="Your name" autocomplete="name">
+                <p class="error" id="name-error"></p>
+              </div>
+
+              <div class="field">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email">
+                <p class="error" id="email-error"></p>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="What would you like to talk about?"></textarea>
+              <p class="error" id="message-error"></p>
+            </div>
+
+            <!-- type="submit" is what makes clicking it run the
+                 submit handler in script.js. -->
+            <button type="submit" class="btn">Send message <span aria-hidden="true">→</span></button>
+          </form>
+        </section>
+
+      </div>
+
+      <!-- The <span id="year"> is filled in by script.js. -->
+      <footer class="footer wrap">
+        <span>&copy; <span id="year"></span> Marianne Napaño</span>
+        <a href="projects.html">See the projects <span aria-hidden="true">&rarr;</span></a>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- One script for the whole site, loaded at the end of the body
+       so the HTML is already parsed by the time it runs. -->
+  <script src="script.js"></script>
+</body>
+</html>

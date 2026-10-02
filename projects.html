@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects | Marianne Napaño</title>
+  <meta name="description" content="Projects built by Marianne Napaño while learning web development.">
+  <link rel="icon" type="image/jpeg" href="images/portrait.jpg">
+  <script>document.documentElement.classList.add('js');</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css?v=14">
+</head>
+<body>
+
+  <!-- Stays off-screen until it is focused, so keyboard users can
+       jump straight past the menu. -->
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- The left sidebar. Always visible on desktop; on phones it
+       slides in and out as a drawer (see script.js section 2). -->
+  <aside class="sidebar" id="sidebar">
+    <button class="side-close" aria-label="Close menu">&#10005;</button>
+
+    <!-- The site name at the top of the sidebar, with the Role and
+         Focus lines tucked underneath it.
+         IMPORTANT: each .brand-node must stay on ONE line in this file.
+         The CSS uses white-space: pre so the tree lines up, and a line
+         break here would show up on the page. -->
+    <div class="side-brand">
+      <span class="brand-mark">MARIANNE.DEV</span>
+      <div class="brand-tree">
+        <span class="brand-node"><span class="brand-branch">├──</span> Role: <span class="brand-value">CS Student</span></span>
+        <span class="brand-node"><span class="brand-branch">└──</span> Focus: <span class="brand-value">Web &amp; Systems</span></span>
+      </div>
+    </div>
+
+    <!-- The five pages of the site, numbered like a table of contents.
+         Each page marks its own link with aria-current="page", and that
+         is what highlights it in the CSS. -->
+    <nav class="side-nav" aria-label="Primary">
+      <a href="index.html" class="side-link">
+        <span class="side-num">01</span><span class="side-label">Home</span>
+      </a>
+      <a href="skills.html" class="side-link">
+        <span class="side-num">02</span><span class="side-label">Skills</span>
+      </a>
+      <a href="projects.html" class="side-link" aria-current="page">
+        <span class="side-num">03</span><span class="side-label">Projects</span>
+      </a>
+      <a href="gallery.html" class="side-link">
+        <span class="side-num">04</span><span class="side-label">Gallery</span>
+      </a>
+      <a href="contact.html" class="side-link">
+        <span class="side-num">05</span><span class="side-label">Contact</span>
+      </a>
+    </nav>
+
+    <!-- Sits at the bottom of the sidebar because of margin-top: auto. -->
+    <div class="side-foot">
+      <span class="side-foot-label">Elsewhere</span>
+      <a href="https://github.com/ifwian" target="_blank" rel="noopener noreferrer">github.com/ifwian</a>
+      <a href="https://www.linkedin.com/in/ifwiannn/" target="_blank" rel="noopener noreferrer">linkedin.com/in/ifwiannn</a>
+      <a href="https://www.instagram.com/ifwiannn/" target="_blank" rel="noopener noreferrer">instagram.com/ifwiannn</a>
+      <a href="mailto:iandevsu@gmail.com">iandevsu@gmail.com</a>
+    </div>
+  </aside>
+
+  <!-- Dimmed overlay behind the open drawer on phones. Tapping it
+       closes the menu. -->
+  <div class="scrim" aria-hidden="true"></div>
+
+  <!-- Only appears on phones. The button is the hamburger: three
+       empty spans styled into three bars by the CSS. -->
+  <header class="topbar">
+    <button class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="topbar-brand">MARIANNE.DEV</a>
+    <span class="topbar-path">projects</span>
+  </header>
+
+  <!-- The scrolling panel on the right. The id="main" is what the
+       "Skip to content" link at the top of the page jumps to. -->
+  <main class="main" id="main">
+    <div class="page">
+
+      <!-- Centres the content and caps its width. -->
+      <div class="wrap">
+
+        <header class="page-head reveal">
+          <p class="path"><span>projects</span></p>
+          <h1 class="page-title">Projects</h1>
+          <p class="lede">
+            Five projects I built while learning. Each one lists what it is for,
+            the languages it uses, and how far along it is.
+          </p>
+        </header>
+
+        <!-- One <article> per project. Each one carries a
+             [ PROJECT_0n ] index, the tech pills it was built with, a
+             status badge on the right, and a [ View Code -> ] link if
+             the code is published. -->
+        <section class="project-list">
+          <article class="project reveal">
+            <img src="images/project-placeholder.svg" alt="" class="project-thumb" aria-hidden="true">
+            <div class="project-body">
+              <p class="project-index">[ PROJECT_01 ]</p>
+              <div class="project-top">
+                <h2>Reservation System</h2>
+                <div class="project-meta">
+                  <div class="tag-row project-tags">
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">HTML/CSS</span>
+                    <span class="tag">Node.js</span>
+                  </div>
+                  <span class="badge">In progress</span>
+                </div>
+              </div>
+              <p>
+                A web app for booking time slots. The part I got stuck on was
+                stopping two people from booking the same slot at once. Only one
+                of them should be told it worked &mdash; the other should be told
+                it was already taken.
+              </p>
+              <a href="https://github.com/ifwian" target="_blank" rel="noopener noreferrer" class="project-link">[ View Code -&gt; ]</a>
+            </div>
+          </article>
+
+          <article class="project reveal">
+            <img src="images/project-placeholder.svg" alt="" class="project-thumb" aria-hidden="true">
+            <div class="project-body">
+              <p class="project-index">[ PROJECT_02 ]</p>
+              <div class="project-top">
+                <h2>The Sifted Café</h2>
+                <div class="project-meta">
+                  <div class="tag-row project-tags">
+                    <span class="tag">HTML</span>
+                    <span class="tag">CSS</span>
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">SQL</span>
+                  </div>
+                  <span class="badge">In progress</span>
+                </div>
+              </div>
+              <p>
+                A café website with a menu people can order from. The products and
+                categories are stored in a database, and the page reads them from
+                there instead of from a hard-coded list. Keeping the page correct
+                when an item sells out is what I am still working on.
+              </p>
+            </div>
+          </article>
+
+          <article class="project reveal">
+            <img src="images/project-placeholder.svg" alt="" class="project-thumb" aria-hidden="true">
+            <div class="project-body">
+              <p class="project-index">[ PROJECT_03 ]</p>
+              <div class="project-top">
+                <h2>LMS Notifier</h2>
+                <div class="project-meta">
+                  <div class="tag-row project-tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">SQLite</span>
+                    <span class="tag">Git</span>
+                  </div>
+                  <span class="badge">In progress</span>
+                </div>
+              </div>
+              <p>
+                A Python script that checks the learning platform I use for class
+                and tells me when something new appears &mdash; an announcement, a
+                file, a grade &mdash; so I don't have to keep logging in myself to
+                check. It runs on a schedule, and it never sends the same
+                notification twice.
+              </p>
+            </div>
+          </article>
+
+          <article class="project reveal">
+            <img src="images/project-placeholder.svg" alt="" class="project-thumb" aria-hidden="true">
+            <div class="project-body">
+              <p class="project-index">[ PROJECT_04 ]</p>
+              <div class="project-top">
+                <h2>This Portfolio</h2>
+                <div class="project-meta">
+                  <div class="tag-row project-tags">
+                    <span class="tag">HTML</span>
+                    <span class="tag">CSS</span>
+                    <span class="tag">JavaScript</span>
+                  </div>
+                  <span class="badge" data-state="done">Done</span>
+                </div>
+              </div>
+              <p>
+                This site. Plain HTML, CSS and JavaScript, with no framework and
+                no build step. I wrote it by hand so that I would understand how
+                the parts fit together.
+              </p>
+            </div>
+          </article>
+
+          <article class="project reveal">
+            <img src="images/project-placeholder.svg" alt="" class="project-thumb" aria-hidden="true">
+            <div class="project-body">
+              <p class="project-index">[ PROJECT_05 ]</p>
+              <div class="project-top">
+                <h2>Personal OS</h2>
+                <div class="project-meta">
+                  <div class="tag-row project-tags">
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">REST API</span>
+                    <span class="tag">Python</span>
+                  </div>
+                  <span class="badge">Planned</span>
+                </div>
+              </div>
+              <p>
+                A personal dashboard: one screen for what I am building, what is
+                due, and what is running at home. Notes, files and services each
+                get their own panel, and it all loads from a single page. Still
+                planned &mdash; it is mostly so I can get better at working with
+                APIs and with data that loads asynchronously.
+              </p>
+            </div>
+          </article>
+        </section>
+
+      </div>
+
+      <footer class="footer wrap">
+        <span>&copy; <span id="year"></span> Marianne Napaño</span>
+        <a href="https://github.com/ifwian" target="_blank" rel="noopener noreferrer">github.com/ifwian <span aria-hidden="true">→</span></a>
+      </footer>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

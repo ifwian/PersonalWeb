@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skills | Marianne Napaño</title>
+  <meta name="description" content="The tools and technologies Marianne Napaño works with as a Computer Science student and aspiring web developer.">
+  <link rel="icon" type="image/jpeg" href="images/portrait.jpg">
+  <!-- Marks the page as JavaScript-enabled, so the CSS knows it is
+       safe to hide the .reveal sections until they scroll into view. -->
+  <script>document.documentElement.classList.add('js');</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css?v=14">
+</head>
+<body>
+
+  <!-- Stays off-screen until it is focused, so keyboard users can
+       jump straight past the menu. -->
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- The left sidebar. Always visible on desktop; on phones it
+       slides in and out as a drawer (see script.js section 2). -->
+  <aside class="sidebar" id="sidebar">
+    <button class="side-close" aria-label="Close menu">&#10005;</button>
+
+    <!-- The site name at the top of the sidebar, with the Role and
+         Focus lines tucked underneath it.
+         IMPORTANT: each .brand-node must stay on ONE line in this file.
+         The CSS uses white-space: pre so the tree lines up, and a line
+         break here would show up on the page. -->
+    <div class="side-brand">
+      <span class="brand-mark">MARIANNE.DEV</span>
+      <div class="brand-tree">
+        <span class="brand-node"><span class="brand-branch">├──</span> Role: <span class="brand-value">CS Student</span></span>
+        <span class="brand-node"><span class="brand-branch">└──</span> Focus: <span class="brand-value">Web &amp; Systems</span></span>
+      </div>
+    </div>
+
+
+    <!-- The five pages of the site, numbered like a table of contents.
+         Each page marks its own link with aria-current="page", and that
+         is what highlights it in the CSS. -->
+    <nav class="side-nav" aria-label="Primary">
+      <a href="index.html" class="side-link">
+        <span class="side-num">01</span><span class="side-label">Home</span>
+      </a>
+      <a href="skills.html" class="side-link" aria-current="page">
+        <span class="side-num">02</span><span class="side-label">Skills</span>
+      </a>
+      <a href="projects.html" class="side-link">
+        <span class="side-num">03</span><span class="side-label">Projects</span>
+      </a>
+      <a href="gallery.html" class="side-link">
+        <span class="side-num">04</span><span class="side-label">Gallery</span>
+      </a>
+      <a href="contact.html" class="side-link">
+        <span class="side-num">05</span><span class="side-label">Contact</span>
+      </a>
+    </nav>
+
+    <!-- Sits at the bottom of the sidebar because of margin-top: auto. -->
+    <div class="side-foot">
+      <span class="side-foot-label">Elsewhere</span>
+      <a href="https://github.com/ifwian" target="_blank" rel="noopener noreferrer">github.com/ifwian</a>
+      <a href="https://www.linkedin.com/in/ifwiannn/" target="_blank" rel="noopener noreferrer">linkedin.com/in/ifwiannn</a>
+      <a href="https://www.instagram.com/ifwiannn/" target="_blank" rel="noopener noreferrer">instagram.com/ifwiannn</a>
+      <a href="mailto:iandevsu@gmail.com">iandevsu@gmail.com</a>
+    </div>
+  </aside>
+
+  <!-- Dimmed overlay behind the open drawer on phones. Tapping it
+       closes the menu. -->
+  <div class="scrim" aria-hidden="true"></div>
+
+  <!-- Only appears on phones. The button is the hamburger: three
+       empty spans styled into three bars by the CSS. -->
+  <header class="topbar">
+    <button class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="topbar-brand">MARIANNE.DEV</a>
+    <span class="topbar-path">skills</span>
+  </header>
+
+  <!-- The scrolling panel on the right. The id="main" is what the
+       "Skip to content" link at the top of the page jumps to. -->
+  <main class="main" id="main">
+    <div class="page">
+
+      <!-- Centres the content and caps its width. -->
+      <div class="wrap">
+
+        <!-- The block at the top of every page: breadcrumb, title,
+             intro line. -->
+        <header class="page-head reveal">
+          <p class="path"><span>skills</span></p>
+          <h1 class="page-title">Skills</h1>
+          <p class="lede">What I reach for, and what I'm still learning.</p>
+        </header>
+
+        <!-- The grid reflows by itself: the CSS asks for columns of
+             at least 170px and fits as many as will fit on the
+             screen. To add a language, copy one .skill block. -->
+        <section class="section reveal">
+          <h2 class="section-title">Languages</h2>
+          <div class="skills-grid">
+            <div class="skill">
+              <span class="skill-icon">&lt;/&gt;</span>
+              <span class="skill-name">HTML</span>
+              <span class="skill-level">Daily</span>
+            </div>
+            <div class="skill">
+              <span class="skill-icon">#</span>
+              <span class="skill-name">CSS</span>
+              <span class="skill-level">Daily</span>
+            </div>
+            <div class="skill">
+              <span class="skill-icon">JS</span>
+              <span class="skill-name">JavaScript</span>
+              <span class="skill-level">Daily</span>
+            </div>
+            <div class="skill">
+              <span class="skill-icon">SQL</span>
+              <span class="skill-name">SQL</span>
+              <span class="skill-level">Comfortable</span>
+            </div>
+            <div class="skill">
+              <span class="skill-icon">_Py</span>
+              <span class="skill-name">Python</span>
+              <span class="skill-level">Comfortable</span>
+            </div>
+            <div class="skill">
+              <span class="skill-icon">_Jv</span>
+              <span class="skill-name">Java</span>
+              <span class="skill-level">Learning</span>
+            </div>
+            <div class="skill">
+              <span class="skill-icon">C++</span>
+              <span class="skill-name">C++</span>
+              <span class="skill-level">Learning</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="section reveal">
+          <h2 class="section-title">Tools &amp; workflow</h2>
+          <!-- Plain text pills, no icon or link. -->
+          <div class="tag-row">
+            <span class="tag">VS Code</span>
+            <span class="tag">Git</span>
+            <span class="tag">GitHub</span>
+            <span class="tag">Chrome DevTools</span>
+          </div>
+        </section>
+
+        <section class="section reveal">
+          <h2 class="section-title">Learning next</h2>
+          <p class="lede">
+            React, Node, and learning how to test what I build instead of only
+            checking that it looks right.
+          </p>
+        </section>
+
+      </div>
+
+      <!-- The <span id="year"> is filled in by script.js. -->
+      <footer class="footer wrap">
+        <span>&copy; <span id="year"></span> Marianne Napaño</span>
+        <a href="projects.html">See them in use <span aria-hidden="true">→</span></a>
+      </footer>
+    </div>
+  </main>
+
+  <!-- One script for the whole site, loaded at the end of the body
+       so the HTML is already parsed by the time it runs. -->
+  <script src="script.js"></script>
+</body>
+</html>

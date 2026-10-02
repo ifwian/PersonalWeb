@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 236" width="400" height="236" role="img" aria-label="Project screenshot placeholder">
+  <title>Project screenshot placeholder</title>
+
+  <rect width="400" height="236" fill="#0a0a0a"/>
+
+  <g fill="none" stroke="#333333" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="128" y="66" width="144" height="104" rx="6"/>
+    <circle cx="163" cy="99" r="10"/>
+    <path d="M132 158l34-34 26 26 22-20 34 32"/>
+  </g>
+
+  <g stroke="#222222" stroke-width="2">
+    <path d="M20 10h360M20 226h360"/>
+  </g>
+</svg>
