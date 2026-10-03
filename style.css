@@ -1017,8 +1017,8 @@ code {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.6rem;
-  padding: 0.4rem 0.6rem;
+  gap: 0.5rem;
+  padding: 0.32rem 0.55rem;
   background: var(--bg);
   border-bottom: 1px solid var(--line);
   border-radius: 5px 5px 0 0;
@@ -1053,7 +1053,7 @@ code {
    path pushing the card wider than its grid column on a narrow
    screen -- the end just gets cut off with a "..." instead. */
 .pcard-path {
-  font-size: 0.58rem;
+  font-size: 0.55rem;
   letter-spacing: 0.04em;
   color: var(--faint);
   white-space: nowrap;
@@ -1063,10 +1063,10 @@ code {
 
 /* The visual display area.
 
-   This is the dark panel with the dotted texture. The texture is a
-   radial-gradient repeated by background-size: one 1px dot per 10px
-   square, in var(--line) so it is barely visible -- it is there to
-   give the panel some grain, not to be noticed.
+   This is the dark panel. The dotted texture on it is the fallback
+   background, visible only on a project that has no screenshot yet
+   -- on every card that does have one, the screenshot covers the
+   panel edge to edge and hides it completely.
 
    Every card's panel is the same height. That is the point of this
    rule and it needs two things working together:
@@ -1079,7 +1079,7 @@ code {
 
    The screenshot is deliberately NOT in flow. An earlier version had
    it as a normal grid item with height: 100%, which does not work
-   here: place-items: center means the image is not stretched, so its
+   here: align-items: center means the image is not stretched, so its
    height: 100% resolves against an auto-sized row and comes out
    indefinite. The browser then falls back to the image's own aspect
    ratio scaled to its width -- and the screenshots are not all the
@@ -1088,24 +1088,27 @@ code {
    taller than its neighbour. Taking the image out of flow fixes it
    for good: it can no longer influence the height of anything.
 
-   The inset that frames the screenshot lives on .pcard-shot, not as
-   padding here, because an absolutely positioned box is placed
-   against this element's PADDING box -- padding on this element
-   would not move it, and a uniform inset is what keeps the border of
-   dots even on all four sides.
+   There is no padding here and the screenshot below has no inset, so
+   the image sits flush against the card edges with nothing showing
+   round it -- no frame, no empty background, nothing letterboxed.
+   Earlier versions left a 0.45rem gap on all four sides to let the
+   dotted texture show as a border, but on a black card that read as
+   dead space around the picture rather than as a deliberate frame.
+   The only line under the image is this panel's own border-bottom.
 
    overflow: hidden is belt and braces: if an image ever does end up
    larger than the panel, it is clipped rather than bleeding over the
-   card below.
+   card below. It also means the screenshot picks up the card's 6px
+   rounded corners for free, so the image needs no radius of its own.
 
    Flex rather than grid here, with the two alignment properties
    written out longhand rather than as place-items. Both centre the
    .pcard-mark fallback identically -- but note they have NO effect on
    the screenshot, which is absolutely positioned and so is not a
    flex item. Do not expect align-items to be what centres the image;
-   the uniform inset below is. That distinction is the whole fix, and
-   it is easy to undo by accident if the image is ever moved back
-   into normal flow. */
+   inset: 0 below is. That distinction is the whole fix, and it is
+   easy to undo by accident if the image is ever moved back into
+   normal flow. */
 .pcard-media {
   position: relative;
   display: flex;
@@ -1121,55 +1124,40 @@ code {
 
 /* The screenshot inside the panel.
 
-   position: absolute with all four insets the same value makes the
-   box a fixed size derived from the panel -- never from the image's
-   own proportions. width and height are left auto so the insets do
-   the sizing; setting them to 100% would ignore the insets and push
-   the image back over the dotted frame.
+   position: absolute with inset: 0 makes the box exactly the size of
+   the panel -- never derived from the image's own proportions, so
+   the image can be any shape and still land on the same frame. width
+   and height stay auto so the insets do the sizing.
 
    object-fit: cover then fills that box while keeping the image's
-   own proportions, cropping whichever axis is too long.
+   own proportions, cropping whichever axis is too long. DO NOT change
+   this to contain: cover fills the box edge to edge so there are
+   never any bars, whereas contain is the setting that CREATES them,
+   fitting the whole image inside and leaving the leftover showing
+   the black panel behind.
+
+   Because every screenshot has been cropped to exactly 16:9 to match
+   this panel's aspect-ratio, cover happens to lose nothing at all --
+   each card shows its screenshot whole, filling the panel.
+
+   No border and no border-radius here on purpose. With inset: 0 the
+   image touches the card edges, so an outline would just trace the
+   card's own edge, and overflow: hidden on .pcard-media already
+   rounds the corners.
 
    object-position is written out even though 50% 50% is the initial
    value, because this is the rule that decides WHICH slice of the
-   screenshot survives the crop, and leaving it implicit is how the
-   framing drifts. It is the one thing here worth overriding per
-   card -- if a particular screenshot loses something important at
-   the top or bottom, set object-position on that card's .pcard-shot
-   to 50% 0 (top), 50% 100% (bottom), or a percentage pair.
-
-   DO NOT change this to contain. Cover fills the box edge to edge,
-   so there are never any bars. Contain is the setting that CREATES
-   them: it fits the whole image inside the box and leaves whatever
-   is left over showing the panel background, which is black.
-
-   The four screenshots are all cropped to exactly 16:9, matching
-   this panel's aspect-ratio, so cover happens to lose nothing at
-   all -- every card shows its screenshot whole, with no bars and no
-   trimming. The originals in images/ are left untouched; the
-   *-16x9.png files next to them are the cropped versions. If you
-   re-capture a screenshot, crop the new one to 16:9 as well, or it
-   will start being trimmed again.
-
-   That cropping is what fixes the Reservation System card reading as
-   a plain black rectangle. Its source was 1120x795 (a ratio of 1.41)
-   and almost entirely dark, so in a 16:9 frame there was very little
-   in it to see. Nothing about the CSS could change that -- the dark
-   was in the file. */
+   screenshot survives any crop, and leaving it implicit is how the
+   framing drifts. It is the one thing here worth overriding per card
+   -- set object-position on that card's .pcard-shot to 50% 0 (top),
+   50% 100% (bottom), or a percentage pair. */
 .pcard-shot {
   position: absolute;
-  inset: 0.45rem;
+  inset: 0;
   width: auto;
   height: auto;
   object-fit: cover;
   object-position: 50% 50%;
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  transition: border-color 0.22s;
-}
-
-.pcard:hover .pcard-shot {
-  border-color: var(--line-2);
 }
 
 /* The fallback for a project with no screenshot yet: a large
@@ -1202,7 +1190,7 @@ code {
 .pcard-body {
   flex: 1;
   min-width: 0;
-  padding: 0.7rem 0.75rem 0.8rem;
+  padding: 0.55rem 0.65rem 0.6rem;
 }
 
 /* Title on the left, status pill on the right. align-items: baseline
@@ -1213,12 +1201,12 @@ code {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
-  margin-bottom: 0.15rem;
+  gap: 0.45rem;
+  margin-bottom: 0.1rem;
 }
 
 .pcard-title {
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   letter-spacing: -0.02em;
 }
 
@@ -1226,7 +1214,7 @@ code {
    BACKEND DEVELOPER". Same treatment as every other small label on
    the site (.fact-key, .contact-label, .field label). */
 .pcard-role {
-  font-size: 0.56rem;
+  font-size: 0.53rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--faint);
@@ -1236,28 +1224,30 @@ code {
 
    min-height is the whole point of this rule. Without it, two cards
    whose blurbs wrap to a different number of lines end up different
-   heights, and the row stops lining up -- which is exactly what
-   happened before. The box is reserved at a fixed five lines, the
-   number the longest blurb ("The Sifted Cafe") wraps to at this
-   column width, so a shorter blurb leaves clean empty space at the
-   bottom of its own box instead of shrinking the card.
+   heights, and the row stops lining up. The box is reserved at a
+   fixed four lines, which is what the longest blurb currently wraps
+   to at this column width, so a shorter blurb leaves clean empty
+   space at the bottom of its own box instead of shrinking the card.
 
-   1.75em is the line-height below, multiplied by 5. Writing it this
+   1.7em is the line-height below, multiplied by 4. Writing it this
    way means the two cannot drift apart: change line-height or
    font-size and the reserved box follows automatically.
 
-   -webkit-line-clamp is the hard ceiling on top of that. Five lines
-   is already the reserved size, so nothing should ever reach it --
-   it is there so that a much longer blurb added later cannot break
-   the row alignment, and would be trimmed with an ellipsis instead.
-   To let a longer blurb through, raise both this number and the
-   line-clamp together. */
+   NOTE: that count is coupled to the copy. If you lengthen the
+   longest blurb past four lines, raise this number to match, or the
+   card will overflow instead of reserving room for it.
+
+   -webkit-line-clamp is the hard ceiling on top of that. Nothing
+   should reach it at the moment -- it is there so that a much longer
+   blurb added later cannot break the row alignment, and would be
+   trimmed with an ellipsis instead. To let a longer blurb through,
+   raise both this number and the line-clamp together. */
 .pcard-desc {
   color: var(--dim);
-  font-size: 0.78rem;
-  line-height: 1.75;
-  min-height: calc(1.75em * 5);
-  margin-top: 0.5rem;
+  font-size: 0.74rem;
+  line-height: 1.7;
+  min-height: calc(1.7em * 4);
+  margin-top: 0.38rem;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 5;
@@ -1273,8 +1263,8 @@ code {
 .pcard-stack {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.28rem;
-  margin-top: 0.65rem;
+  gap: 0.25rem;
+  margin-top: 0.48rem;
   list-style: none;
 }
 
@@ -1283,8 +1273,8 @@ code {
    border on hover -- these are links-looking pills but not links,
    matching how .tag behaves everywhere else on the site. */
 .pcard-stack .tag {
-  font-size: 0.6rem;
-  padding: 0.15rem 0.5rem;
+  font-size: 0.56rem;
+  padding: 0.08rem 0.42rem;
 }
 
 /* The footer: a hairline, then the status line on the left and the
@@ -1299,15 +1289,15 @@ code {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
+  gap: 0.45rem;
+  padding: 0.38rem 0.65rem;
   border-top: 1px solid var(--line);
 }
 
 /* The "NO LIVE URL YET" line. var(--line-2) is the darkest grey,
    which is right for a note that is not asking to be clicked. */
 .pcard-state {
-  font-size: 0.56rem;
+  font-size: 0.53rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--line-2);
@@ -1319,14 +1309,14 @@ code {
    only a link, so it is set inline-block rather than flex. */
 .pcard-link {
   display: inline-block;
-  font-size: 0.62rem;
+  font-size: 0.58rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text);
   border: 1px solid var(--line-2);
   border-radius: var(--radius);
-  padding: 0.3rem 0.6rem;
+  padding: 0.24rem 0.5rem;
   white-space: nowrap;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
@@ -1340,14 +1330,14 @@ code {
 /* The status pill, e.g. "In progress" or "Done". Sits on the title
    row of every card. */
 .badge {
-  font-size: 0.58rem;
+  font-size: 0.55rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--dim);
   border: 1px solid var(--line-2);
   border-radius: 999px;
-  padding: 0.15rem 0.5rem;
+  padding: 0.1rem 0.45rem;
   white-space: nowrap;
 }
 
