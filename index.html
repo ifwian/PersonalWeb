@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Marianne Napaño | Computer Science Student &amp; Aspiring Web Developer</title>
   <meta name="description" content="Portfolio of Marianne Napaño, a Computer Science student and aspiring web developer based in Calamba, Philippines.">
-  <link rel="icon" type="image/jpeg" href="images/portrait.jpg">
+  <link rel="icon" type="image/png" href="images/marianneid.png">
   <!-- Marks the page as JavaScript-enabled. The CSS uses .js to decide
        whether to hide the .reveal sections: without it they stay
        visible, so nothing is ever lost if this script is blocked. -->
@@ -19,7 +19,7 @@
        is a newer version of the file, so a saved copy in the cache
        is not reused. Bump the number after editing style.css, or
        the page will keep showing the old version. -->
-  <link rel="stylesheet" href="style.css?v=14">
+  <link rel="stylesheet" href="style.css?v=21">
 </head>
 <body>
 
@@ -108,11 +108,18 @@
         <section class="hero reveal">
           <div class="hero-split">
             <div class="hero-media">
-<!-- The frame is sized by the CSS (a 200 x 200 rounded square) and
-                   holds the photo, which fills it. The caption sits
-                   directly underneath, centred on the frame. -->
+<!-- The frame is sized by the CSS (a 200 x 250 rounded rectangle, held
+                   at that shape by aspect-ratio) and holds the photo, which
+                   fills it. The caption sits directly underneath, centred
+                   on the frame.
+
+                   The width and height attributes below are the photo's own
+                   1024 x 1024, not the size it displays at. The browser uses
+                   them to work out the image's proportions before the file
+                   has loaded, so the frame does not resize as the picture
+                   arrives. CSS still decides the final size. -->
               <div class="avatar-frame">
-                <img src="images/marianneid.png" alt="Marianne Napaño" class="avatar">
+                <img src="images/marianneid.png" alt="Marianne Napaño" class="avatar" width="1024" height="1024" decoding="async">
               </div>
               <span class="hero-media-tag">marianne / 2026</span>
             </div>

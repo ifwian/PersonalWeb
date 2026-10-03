@@ -25,7 +25,7 @@
      7.  Shared page pieces (titles, sections, cards)
      8.  Home page
      9.  Skills page
-     10. Projects page
+     10. Projects page (project cards)
      11. Gallery page
      12. Contact page and form
      13. Footer
@@ -413,6 +413,18 @@ button {
   width: min(100% - 4rem, 1040px);
 }
 
+/* The projects page gets a narrower one. Its content is a grid of
+   cards rather than a column of prose, so at the default 900px each
+   card was around 430px wide -- more than a card holding a title, a
+   badge, a short role line and a 3-line blurb needs. The extra room
+   went into the gutter between cards instead of into the cards.
+
+   820px puts each card at roughly 390px, which is enough for the
+   title and badge to sit on one line with room to spare. */
+.page-projects .wrap {
+  width: min(100% - 4rem, 820px);
+}
+
 
 /* ------------------------------------------------------------
    7. SHARED PAGE PIECES
@@ -561,13 +573,28 @@ code {
   gap: 0.7rem;
 }
 
-/* The frame around the profile photo, a rounded square at 200 x 200.
+/* The frame around the profile photo: a rounded rectangle at 200 x 250,
+   which is a 4:5 portrait shape.
 
-   The photo is 1024 x 1024, which is square as well, so the frame and
-   the picture are the same shape. Nothing is cropped and nothing is
-   padded out. (The 1px border takes a pixel off each edge, which
-   leaves the inner box at 198 x 198 — still exactly square, so it
-   still matches.)
+   The photo itself (images/marianneid.png) is 1024 x 1024 — square. So
+   the frame and the picture are NOT the same shape, and the photo is
+   cropped to fit. That cropping is done by object-fit: cover on .avatar
+   below: a square image dropped into a box that is taller than it is
+   wide loses a slice off each side. Here that only trims empty white
+   background either side of the shoulders, so nothing important is cut.
+
+   aspect-ratio: 4 / 5 is what holds the 4:5 shape. Saying it this way
+   instead of using a fixed height means the height is derived from the
+   width, so the frame keeps its proportions even if the 200px is ever
+   changed, and the photo can never end up squashed to fit some other
+   ratio. The rendered size is identical to the height: 250px it
+   replaced, because the reset sets box-sizing: border-box, which makes
+   aspect-ratio measure the border box. (The 1px border then leaves the
+   inner box the <img> fills at 198 x 248.)
+
+   The photo is well above the resolution the frame needs — 1024px of
+   source in a 198px box — so it stays sharp on high-DPI screens. If it
+   ever looks soft, the fix is a higher-resolution source file, not CSS.
 
    border-radius: 12px takes the sharp corners off, and overflow: hidden
    is what makes those rounded corners clip the photo as well, not just
@@ -586,14 +613,20 @@ code {
    empty gap beside the image. Keep the two numbers the same. */
 .avatar-frame {
   width: 200px;
-  height: 250px;
+  aspect-ratio: 4 / 5;
   border: 1px solid var(--text);
   border-radius: 12px;
   background: var(--panel);
   overflow: hidden;
-  border-color:rgb(255, 255, 255)
 }
 
+/* The photo inside the frame. It is given the full inner box of the
+   frame — width and height both 100% — and object-fit: cover then
+   scales it up to fill that box while keeping its own proportions,
+   cropping the overflow. That is the pair that stops the picture being
+   stretched: 100% decides how much room it gets, cover decides how it
+   fills that room. object-position: center keeps the crop even on both
+   sides rather than favouring one. */
 .avatar {
   display: block;
   width: 100%;
@@ -875,118 +908,470 @@ code {
    10. PROJECTS PAGE
    ------------------------------------------------------------ */
 
-.project-list {
-  display: flex;
-  flex-direction: column;
+/* --- the cards ------------------------------------------------
+
+   Each project is one card shaped like a small terminal window.
+
+   These replaced an earlier .project-list layout -- a single column
+   of rows, each with a thumbnail on the left -- which was rendering
+   the same five projects a second time underneath this grid. Its
+   markup and all of its rules are gone; only .badge survived, because
+   that class is not tied to the old layout.
+
+   Everything here is built from the same :root custom properties as
+   the rest of the site. There is no new colour anywhere. The tech
+   icons are inline SVG that inherits currentColor, which is why they
+   are greyscale too: the palette has no colour to tint them with. */
+
+/* The header above the grid: the "03 - PROJECTS" tracker, the
+   lowercase title, and the italic line underneath. */
+.pgrid-head {
+  margin-bottom: 1.15rem;
+}
+
+/* The tracker line. It just reuses .section-title (uppercase, widely
+   tracked, with a hairline under it) so it matches the numbered
+   section headings elsewhere on the site. */
+.pgrid-head .section-title {
+  margin-bottom: 0.8rem;
+}
+
+/* The lowercase display title. Same weight and tight tracking as
+   .page-title, but smaller: this is a section heading, not the
+   page's own h1. text-transform: lowercase lets the HTML stay
+   written as "Projects" while rendering as "projects". */
+.pgrid-title {
+  font-size: clamp(1.35rem, 2.8vw, 1.7rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-transform: lowercase;
+  margin-bottom: 0.4rem;
+}
+
+/* The italic subtitle. Italic is the one thing on this site that is
+   set in a different style, so it is deliberately reserved for this
+   line. */
+.pgrid-sub {
+  font-style: italic;
+  font-size: 0.83rem;
+  color: var(--dim);
+  max-width: 58ch;
+}
+
+/* The grid itself: two equal columns.
+
+   Two explicit columns rather than auto-fit, because the cards are
+   tall and a third column would make them too narrow to read the
+   role line and the title badge on one row. minmax(0, 1fr) (not
+   1fr) is what lets a column shrink below the width of the long
+   unbroken file path inside it.
+
+   The gap is set here rather than reusing var(--gap), because the
+   cards carry their own padding and the shared 1.25rem gap read as
+   too much air between them at this size. There is no margin-bottom:
+   nothing sits below the grid any more.
+
+   align-items: stretch is the CSS default for grid items, so it is
+   not strictly needed -- it is written out because it is the thing
+   that makes every card in a row the height of the tallest one, and
+   that is worth being explicit about. It matters for the lone card
+   in the last row: without it that card would shrink to its own
+   content, so all five would not be the same height. */
+.pgrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
   gap: 0.9rem;
 }
 
-/* One project: a thumbnail on the left, text on the right.
-   Unlike the cards above, this one does not lift on hover. */
-.project {
+/* One card. A flex column so that .pcard-foot, which carries
+   margin-top: auto, is pushed to the bottom edge of every card no
+   matter how short or long the description above it is. That is what
+   keeps the footers in a straight line across the grid.
+
+   overflow: hidden is what clips the title bar's rounded corners to
+   the card's own rounded corners, so the bar reads as part of the
+   card rather than a rectangle sitting on top of it.
+
+   The radius is 6px rather than var(--radius), because a card this
+   size with a window bar on top needs slightly softer corners to
+   read as one card; at 4px the bar and the body look like two
+   separate boxes. */
+.pcard {
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
+  flex-direction: column;
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 1.1rem;
-  transition: border-color 0.22s, background-color 0.22s;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 0.22s, background-color 0.22s, transform 0.22s;
 }
 
-.project:hover {
+.pcard:hover {
   border-color: var(--line-2);
   background: var(--raised);
+  transform: translateY(-2px);
 }
 
-/* The screenshot placeholder on the left of a project.
-   flex: 0 0 200px stops it being squeezed by the text beside it.
-   200 x 118 is the shape of the placeholder SVG, and object-fit:
-   cover means a real screenshot can be any shape and still fill it. */
-.project-thumb {
-  flex: 0 0 200px;
-  width: 200px;
-  height: 118px;
+/* The window title bar: dots on the left, file path on the right.
+
+   The top corners are rounded to match the card (5px against the
+   card's 6px, so the 1px border does not poke out) and the bottom
+   ones are square, because the bar sits directly on top of the card
+   body. The background is one step darker than the card -- var(--bg)
+   against the card's var(--panel) -- which is what makes it read as
+   a separate strip without needing a shadow. */
+.pcard-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.4rem 0.6rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  border-radius: 5px 5px 0 0;
+}
+
+/* The three window dots. They are empty <i> elements: the size and
+   fill are set here so no image is needed. flex-shrink: 0 keeps them
+   from being squashed when the file path beside them is long. */
+.pcard-dots {
+  display: flex;
+  gap: 0.26rem;
+  flex-shrink: 0;
+}
+
+.pcard-dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--line-2);
+  transition: background-color 0.22s;
+}
+
+/* On hover the dots brighten, so the bar reads as one unit with the
+   card rather than staying flat. */
+.pcard:hover .pcard-dots i {
+  background: var(--faint);
+}
+
+/* The file path, e.g. "projects/the-sifted-cafe".
+
+   overflow: hidden plus text-overflow: ellipsis is what stops a long
+   path pushing the card wider than its grid column on a narrow
+   screen -- the end just gets cut off with a "..." instead. */
+.pcard-path {
+  font-size: 0.58rem;
+  letter-spacing: 0.04em;
+  color: var(--faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* The visual display area.
+
+   This is the dark panel with the dotted texture. The texture is a
+   radial-gradient repeated by background-size: one 1px dot per 10px
+   square, in var(--line) so it is barely visible -- it is there to
+   give the panel some grain, not to be noticed.
+
+   Every card's panel is the same height. That is the point of this
+   rule and it needs two things working together:
+
+     - position: relative, so the absolutely positioned screenshot
+       inside has this box to measure against.
+     - aspect-ratio with nothing in flow, so the height comes from
+       the width and the width is the same for every card (the grid
+       columns are equal fractions).
+
+   The screenshot is deliberately NOT in flow. An earlier version had
+   it as a normal grid item with height: 100%, which does not work
+   here: place-items: center means the image is not stretched, so its
+   height: 100% resolves against an auto-sized row and comes out
+   indefinite. The browser then falls back to the image's own aspect
+   ratio scaled to its width -- and the screenshots are not all the
+   same shape. reservation.png is 1120x795 (1.41) while thesifted.png
+   is 1917x911 (2.10), so Reservation System rendered noticeably
+   taller than its neighbour. Taking the image out of flow fixes it
+   for good: it can no longer influence the height of anything.
+
+   The inset that frames the screenshot lives on .pcard-shot, not as
+   padding here, because an absolutely positioned box is placed
+   against this element's PADDING box -- padding on this element
+   would not move it, and a uniform inset is what keeps the border of
+   dots even on all four sides.
+
+   overflow: hidden is belt and braces: if an image ever does end up
+   larger than the panel, it is clipped rather than bleeding over the
+   card below.
+
+   Flex rather than grid here, with the two alignment properties
+   written out longhand rather than as place-items. Both centre the
+   .pcard-mark fallback identically -- but note they have NO effect on
+   the screenshot, which is absolutely positioned and so is not a
+   flex item. Do not expect align-items to be what centres the image;
+   the uniform inset below is. That distinction is the whole fix, and
+   it is easy to undo by accident if the image is ever moved back
+   into normal flow. */
+.pcard-media {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 9;
+  background-color: var(--bg);
+  background-image: radial-gradient(var(--line) 1px, transparent 1px);
+  background-size: 10px 10px;
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+
+/* The screenshot inside the panel.
+
+   position: absolute with all four insets the same value makes the
+   box a fixed size derived from the panel -- never from the image's
+   own proportions. width and height are left auto so the insets do
+   the sizing; setting them to 100% would ignore the insets and push
+   the image back over the dotted frame.
+
+   object-fit: cover then fills that box while keeping the image's
+   own proportions, cropping whichever axis is too long.
+
+   object-position is written out even though 50% 50% is the initial
+   value, because this is the rule that decides WHICH slice of the
+   screenshot survives the crop, and leaving it implicit is how the
+   framing drifts. It is the one thing here worth overriding per
+   card -- if a particular screenshot loses something important at
+   the top or bottom, set object-position on that card's .pcard-shot
+   to 50% 0 (top), 50% 100% (bottom), or a percentage pair.
+
+   DO NOT change this to contain. Cover fills the box edge to edge,
+   so there are never any bars. Contain is the setting that CREATES
+   them: it fits the whole image inside the box and leaves whatever
+   is left over showing the panel background, which is black.
+
+   The four screenshots are all cropped to exactly 16:9, matching
+   this panel's aspect-ratio, so cover happens to lose nothing at
+   all -- every card shows its screenshot whole, with no bars and no
+   trimming. The originals in images/ are left untouched; the
+   *-16x9.png files next to them are the cropped versions. If you
+   re-capture a screenshot, crop the new one to 16:9 as well, or it
+   will start being trimmed again.
+
+   That cropping is what fixes the Reservation System card reading as
+   a plain black rectangle. Its source was 1120x795 (a ratio of 1.41)
+   and almost entirely dark, so in a 16:9 frame there was very little
+   in it to see. Nothing about the CSS could change that -- the dark
+   was in the file. */
+.pcard-shot {
+  position: absolute;
+  inset: 0.45rem;
+  width: auto;
+  height: auto;
   object-fit: cover;
+  object-position: 50% 50%;
   border: 1px solid var(--line);
   border-radius: 2px;
-  background: var(--bg);
   transition: border-color 0.22s;
 }
 
-.project:hover .project-thumb {
+.pcard:hover .pcard-shot {
   border-color: var(--line-2);
 }
 
-.project-body {
+/* The fallback for a project with no screenshot yet: a large
+   technology mark centred on the dotted panel. The SVGs inherit
+   colour from here, so they are greyscale like the rest of the site
+   and cannot be recoloured without editing this one rule.
+
+   It sits at the faintest grey and brightens on hover, the same way
+   .pcard-dots do. It is centred by .pcard-media's flex alignment,
+   which unlike the screenshot IS a real flow child. */
+.pcard-mark {
+  display: grid;
+  place-items: center;
+  color: var(--line-2);
+  transition: color 0.22s;
+}
+
+.pcard:hover .pcard-mark {
+  color: var(--faint);
+}
+
+.pcard-mark svg {
+  width: 34px;
+  height: 34px;
+}
+
+/* The text block. flex: 1 makes it absorb the leftover height so the
+   foot below it is pushed down, and min-width: 0 lets it shrink
+   rather than force the card wider. */
+.pcard-body {
   flex: 1;
   min-width: 0;
+  padding: 0.7rem 0.75rem 0.8rem;
 }
 
-/* The small "[ PROJECT_01 ]" label above a project title. */
-.project-index {
-  font-size: 0.66rem;
-  letter-spacing: 0.1em;
+/* Title on the left, status pill on the right. align-items: baseline
+   would be wrong here -- the pill has a border and padding, so
+   centring it against the cap height is what lines it up with the
+   title. */
+.pcard-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.15rem;
+}
+
+.pcard-title {
+  font-size: 0.88rem;
+  letter-spacing: -0.02em;
+}
+
+/* The uppercase role line under the title, e.g. "DATABASE &
+   BACKEND DEVELOPER". Same treatment as every other small label on
+   the site (.fact-key, .contact-label, .field label). */
+.pcard-role {
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
   color: var(--faint);
-  margin-bottom: 0.35rem;
 }
 
-/* The "[ View Code -> ]" link at the foot of a project. It is
-   styled like a button but is only a link. */
-.project-link {
+/* The blurb.
+
+   min-height is the whole point of this rule. Without it, two cards
+   whose blurbs wrap to a different number of lines end up different
+   heights, and the row stops lining up -- which is exactly what
+   happened before. The box is reserved at a fixed five lines, the
+   number the longest blurb ("The Sifted Cafe") wraps to at this
+   column width, so a shorter blurb leaves clean empty space at the
+   bottom of its own box instead of shrinking the card.
+
+   1.75em is the line-height below, multiplied by 5. Writing it this
+   way means the two cannot drift apart: change line-height or
+   font-size and the reserved box follows automatically.
+
+   -webkit-line-clamp is the hard ceiling on top of that. Five lines
+   is already the reserved size, so nothing should ever reach it --
+   it is there so that a much longer blurb added later cannot break
+   the row alignment, and would be trimmed with an ellipsis instead.
+   To let a longer blurb through, raise both this number and the
+   line-clamp together. */
+.pcard-desc {
+  color: var(--dim);
+  font-size: 0.78rem;
+  line-height: 1.75;
+  min-height: calc(1.75em * 5);
+  margin-top: 0.5rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+}
+
+/* The row of technology icons. This is a <ul> because it is a list
+   of items, and the reset already zeroes the padding on every
+   element, which is what removes the bullets once list-style is
+   cleared. */
+.pcard-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.28rem;
+  margin-top: 0.65rem;
+  list-style: none;
+}
+
+/* One icon: a small bordered square holding an 11px SVG.
+
+   The border is what makes it visible on a black card -- an icon on
+   its own would just be a grey shape floating in the dark. Each one
+   carries a title attribute, so hovering gives the full name rather
+   than making you guess from the drawing. */
+.stack-chip {
+  display: grid;
+  place-items: center;
+  width: 21px;
+  height: 21px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  color: var(--faint);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.stack-chip:hover {
+  color: var(--text);
+  border-color: var(--line-2);
+}
+
+.stack-chip svg {
+  width: 11px;
+  height: 11px;
+}
+
+/* The footer: a hairline, then the status line on the left and the
+   action on the right.
+
+   margin-top: auto does the real work here. The card is a flex
+   column, so this pushes the footer to the bottom of every card and
+   the footers line up across the row even when the descriptions above
+   them are different lengths. */
+.pcard-foot {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid var(--line);
+}
+
+/* The "NO LIVE URL YET" line. var(--line-2) is the darkest grey,
+   which is right for a note that is not asking to be clicked. */
+.pcard-state {
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--line-2);
+  white-space: nowrap;
+}
+
+/* The action button, e.g. "View Code". Styled like a small version
+   of .btn: hairline border, and a solid white fill on hover. It is
+   only a link, so it is set inline-block rather than flex. */
+.pcard-link {
   display: inline-block;
-  margin-top: 0.9rem;
-  font-size: 0.72rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   color: var(--text);
   border: 1px solid var(--line-2);
   border-radius: var(--radius);
-  padding: 0.4rem 0.85rem;
+  padding: 0.3rem 0.6rem;
+  white-space: nowrap;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 
-.project-link:hover {
+.pcard-link:hover {
   background: var(--text);
   border-color: var(--text);
   color: var(--bg);
 }
 
-/* Title on the left, tags and status on the right. */
-.project-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.4rem;
-}
-
-.project-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-}
-
-/* Tighter version of .tag-row for inside a project row. */
-.project-tags {
-  gap: 0.4rem;
-}
-
-.project-tags .tag {
-  font-size: 0.7rem;
-  padding: 0.2rem 0.6rem;
-}
-
-/* The status pill, e.g. "In progress" or "Done". */
+/* The status pill, e.g. "In progress" or "Done". Sits on the title
+   row of every card. */
 .badge {
-  font-size: 0.62rem;
+  font-size: 0.58rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--dim);
   border: 1px solid var(--line-2);
   border-radius: 999px;
-  padding: 0.2rem 0.6rem;
+  padding: 0.15rem 0.5rem;
   white-space: nowrap;
 }
 
@@ -996,11 +1381,6 @@ code {
   color: var(--bg);
   background: var(--text);
   border-color: var(--text);
-}
-
-.project p {
-  color: var(--dim);
-  font-size: 0.87rem;
 }
 
 
@@ -1414,10 +1794,14 @@ form {
     width: min(100% - 2.5rem, 1040px);
   }
 
+  .page-projects .wrap {
+    width: min(100% - 2.5rem, 820px);
+  }
+
 /* The hero stacks with the photo above the name, so the reading
      order stays portrait -> name -> bio.
      The photo frame is not resized here on purpose: it keeps its
-     200 x 200 size on a phone as well as a desktop. A phone at
+     200 x 250 size on a phone as well as a desktop. A phone at
      320px wide still leaves 280px of content, so 200px fits. */
   .hero-split {
     grid-template-columns: minmax(0, 1fr);
@@ -1429,32 +1813,19 @@ form {
     gap: 1.75rem;
   }
 
-  /* --- projects stack vertically --- */
+  /* --- project card grid drops to one column ---
 
-  .project {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-  }
+     The cards carry a window bar with a file path and a footer with
+     two items on it, so they need more width than the .skill cards
+     do. At two columns this screen would leave roughly 400px per
+     card, which starts truncating the path and squeezing the footer,
+     so they stack to a single column from here down.
 
-  /* Full width on a phone. aspect-ratio repeats the 200 x 118 shape
-     from the desktop rule so the placeholder is not distorted. */
-  .project-thumb {
-    flex: 0 0 auto;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 200 / 118;
-  }
-
-  .project-top {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-
-  .project-meta {
-    width: 100%;
-    justify-content: space-between;
+     This sits in the 900px block rather than getting its own query
+     because it is the same "go to one column" decision as the
+     layouts above it. */
+  .pgrid {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   /* --- form goes to one field per row --- */

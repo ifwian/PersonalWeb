@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projects | Marianne Napaño</title>
   <meta name="description" content="Projects built by Marianne Napaño while learning web development.">
-  <link rel="icon" type="image/jpeg" href="images/portrait.jpg">
+  <link rel="icon" type="image/png" href="images/marianneid.png">
   <script>document.documentElement.classList.add('js');</script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css?v=14">
+  <link rel="stylesheet" href="style.css?v=21">
 </head>
 <body>
 
@@ -86,148 +86,279 @@
   <!-- The scrolling panel on the right. The id="main" is what the
        "Skip to content" link at the top of the page jumps to. -->
   <main class="main" id="main">
-    <div class="page">
+    <!-- The extra class "page-projects" gives this page a narrower
+         text measure than the default .wrap. The projects are a
+         two-column grid of cards rather than a column of prose, so
+         the standard 900px left each card with more room than it
+         needed and pushed the cards further apart than the design
+         wanted. See .page-projects .wrap in style.css section 6. -->
+    <div class="page page-projects">
 
       <!-- Centres the content and caps its width. -->
       <div class="wrap">
 
-        <header class="page-head reveal">
-          <p class="path"><span>projects</span></p>
-          <h1 class="page-title">Projects</h1>
-          <p class="lede">
-            Five projects I built while learning. Each one lists what it is for,
-            the languages it uses, and how far along it is.
+        <!-- =====================================================
+             THE SECTION HEADER
+             =====================================================
+             This is the only header on the page. The older .page-head
+             block -- the ~/projects breadcrumb, an <h1> reading
+             "Projects", and an intro paragraph -- duplicated it and
+             has been removed.
+
+             The <h1> moved down here rather than being deleted with
+             the rest of that block: a page needs exactly one h1, and
+             this is the title that survives. -->
+
+        <header class="pgrid-head reveal">
+          <p class="section-title"><span class="section-index">03</span> &mdash; Projects</p>
+          <h1 class="pgrid-title">Projects</h1>
+          <p class="pgrid-sub">
+            I&rsquo;m just getting started &mdash; here&rsquo;s what I&rsquo;m planning to build first.
           </p>
         </header>
 
-        <!-- One <article> per project. Each one carries a
-             [ PROJECT_0n ] index, the tech pills it was built with, a
-             status badge on the right, and a [ View Code -> ] link if
-             the code is published. -->
-        <section class="project-list">
-          <article class="project reveal">
-            <img src="images/reservation.png" alt="" class="project-thumb" aria-hidden="true">
-            <div class="project-body">
-              <p class="project-index">[ PROJECT_01 ]</p>
-              <div class="project-top">
-                <h2>Reservation System</h2>
-                <div class="project-meta">
-                  <div class="tag-row project-tags">
-                    <span class="tag">JavaScript</span>
-                    <span class="tag">HTML/CSS</span>
-                    <span class="tag">Node.js</span>
-                  </div>
-                  <span class="badge">In progress</span>
-                </div>
+        <!-- =====================================================
+             THE PROJECT CARDS
+             =====================================================
+             One card per project, styled as a small terminal window.
+             This is the only place the projects are listed -- the
+             older .project-list row layout used to sit below it and
+             has been removed, along with its styles in section 10 of
+             style.css.
+
+             Card anatomy, top to bottom:
+               .pcard-bar      window dots + the file path
+               .pcard-media    dotted panel holding the screenshot
+               .pcard-body     title, badge, role, blurb, tech icons
+               .pcard-foot     status note + action button
+
+             The tech icons are inline SVG so they inherit the text
+             colour and need no extra requests. They are line art
+             rather than the real brand logos, because this site has
+             one greyscale palette and coloured logos would break it.
+
+             All five cards are the same height. That is not automatic:
+             the blurbs wrap to between three and five lines, so the
+             .pcard-desc rule in style.css reserves a fixed five-line
+             box and clamps anything past it. Five is the count "The
+             Sifted Cafe" reaches, which makes it the size standard.
+
+             Only one project (.pcard-mark) has no screenshot yet, so
+             it shows a large technology mark on the dotted panel
+             instead. Give it a .pcard-shot <img> when you have one. -->
+
+        <div class="pgrid">
+
+          <!-- ---------- 01 ---------- -->
+          <article class="pcard reveal">
+            <div class="pcard-bar">
+              <span class="pcard-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="pcard-path">projects/reservation-system</span>
+            </div>
+
+            <div class="pcard-media">
+              <img src="images/reservation-16x9.png" alt="" class="pcard-shot" aria-hidden="true">
+            </div>
+
+            <div class="pcard-body">
+              <div class="pcard-head">
+                <h3 class="pcard-title">Reservation System</h3>
+                <span class="badge">In progress</span>
               </div>
-              <p>
-                A web app for booking time slots. The part I got stuck on was
-                stopping two people from booking the same slot at once. Only one
-                of them should be told it worked &mdash; the other should be told
-                it was already taken.
+              <p class="pcard-role">Frontend &amp; Backend Developer</p>
+              <p class="pcard-desc">
+                A web app for booking time slots. The hard part was stopping two
+                people from claiming the same slot at once &mdash; only one of them
+                should be told it worked.
               </p>
-              <a href="https://github.com/ifwian" target="_blank" rel="noopener noreferrer" class="project-link">[ View Code -&gt; ]</a>
+              <ul class="pcard-stack">
+                <li class="stack-chip" title="JavaScript">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" role="img" aria-label="JavaScript"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7.5 15.5V9h2M7.5 12.2h1.8M13.5 9.2a2.6 2.6 0 0 1 3 2.4v1.6a1.6 1.6 0 0 1-3 0"/></svg>
+                </li>
+                <li class="stack-chip" title="HTML">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="HTML"><path d="M8.5 7.5 4 12l4.5 4.5"/><path d="M15.5 7.5 20 12l-4.5 4.5"/><path d="M13.6 5.5 10.4 18.5"/></svg>
+                </li>
+                <li class="stack-chip" title="Node.js">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" role="img" aria-label="Node.js"><path d="M12 2.9 20 7.5v9L12 21.1 4 16.5v-9z"/></svg>
+                </li>
+              </ul>
+            </div>
+
+            <div class="pcard-foot">
+              <span class="pcard-state">No live url yet</span>
+              <a href="https://github.com/ifwian" target="_blank" rel="noopener noreferrer" class="pcard-link">View Code</a>
             </div>
           </article>
 
-          <article class="project reveal">
-            <img src="images/project-placeholder.svg" alt="" class="project-thumb" aria-hidden="true">
-            <div class="project-body">
-              <p class="project-index">[ PROJECT_02 ]</p>
-              <div class="project-top">
-                <h2>The Sifted Café</h2>
-                <div class="project-meta">
-                  <div class="tag-row project-tags">
-                    <span class="tag">HTML</span>
-                    <span class="tag">CSS</span>
-                    <span class="tag">JavaScript</span>
-                    <span class="tag">SQL</span>
-                  </div>
-                  <span class="badge">In progress</span>
-                </div>
+          <!-- ---------- 02 ---------- -->
+          <article class="pcard reveal">
+            <div class="pcard-bar">
+              <span class="pcard-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="pcard-path">projects/the-sifted-cafe</span>
+            </div>
+
+            <div class="pcard-media">
+              <img src="images/thesifted-16x9.png" alt="" class="pcard-shot" aria-hidden="true">
+            </div>
+
+            <div class="pcard-body">
+              <div class="pcard-head">
+                <h3 class="pcard-title">The Sifted Caf&eacute;</h3>
+                <span class="badge">In progress</span>
               </div>
-              <p>
-                A café website with a menu people can order from. The products and
-                categories are stored in a database, and the page reads them from
-                there instead of from a hard-coded list. Keeping the page correct
-                when an item sells out is what I am still working on.
+              <p class="pcard-role">Full-Stack Developer</p>
+              <p class="pcard-desc">
+                A caf&eacute; website with a menu people can order from. Products and
+                categories live in a database and the page reads them from there
+                rather than from a hard-coded list. Keeping the page correct when
+                an item sells out is what I&rsquo;m still working on.
               </p>
+              <ul class="pcard-stack">
+                <li class="stack-chip" title="HTML">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="HTML"><path d="M8.5 7.5 4 12l4.5 4.5"/><path d="M15.5 7.5 20 12l-4.5 4.5"/><path d="M13.6 5.5 10.4 18.5"/></svg>
+                </li>
+                <li class="stack-chip" title="CSS">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" role="img" aria-label="CSS"><path d="M9.6 3.5 7.6 20.5"/><path d="M16.4 3.5 14.4 20.5"/><path d="M4 9.2h16"/><path d="M3.4 15h16"/></svg>
+                </li>
+                <li class="stack-chip" title="JavaScript">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" role="img" aria-label="JavaScript"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7.5 15.5V9h2M7.5 12.2h1.8M13.5 9.2a2.6 2.6 0 0 1 3 2.4v1.6a1.6 1.6 0 0 1-3 0"/></svg>
+                </li>
+                <li class="stack-chip" title="SQL">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" role="img" aria-label="SQL"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg>
+                </li>
+              </ul>
+            </div>
+
+            <div class="pcard-foot">
+              <span class="pcard-state">No live url yet</span>
             </div>
           </article>
 
-          <article class="project reveal">
-            <img src="images/project-placeholder.svg" alt="" class="project-thumb" aria-hidden="true">
-            <div class="project-body">
-              <p class="project-index">[ PROJECT_03 ]</p>
-              <div class="project-top">
-                <h2>LMS Notifier</h2>
-                <div class="project-meta">
-                  <div class="tag-row project-tags">
-                    <span class="tag">Python</span>
-                    <span class="tag">SQLite</span>
-                    <span class="tag">Git</span>
-                  </div>
-                  <span class="badge">In progress</span>
-                </div>
+          <!-- ---------- 03 ----------
+               No screenshot yet, so this one shows a large Python
+               mark on the dotted panel instead. -->
+          <article class="pcard reveal">
+            <div class="pcard-bar">
+              <span class="pcard-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="pcard-path">projects/lms-notifier</span>
+            </div>
+
+            <div class="pcard-media">
+              <span class="pcard-mark">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" role="img" aria-label="Python"><rect x="3.2" y="3.2" width="8.6" height="8.6" rx="2.6"/><rect x="12.2" y="12.2" width="8.6" height="8.6" rx="2.6"/><path d="M11.8 8.4h2.6a2 2 0 0 1 2 2v1.8"/></svg>
+              </span>
+            </div>
+
+            <div class="pcard-body">
+              <div class="pcard-head">
+                <h3 class="pcard-title">LMS Notifier</h3>
+                <span class="badge">In progress</span>
               </div>
-              <p>
+              <p class="pcard-role">Automation &amp; Scripting</p>
+              <p class="pcard-desc">
                 A Python script that checks the learning platform I use for class
                 and tells me when something new appears &mdash; an announcement, a
-                file, a grade &mdash; so I don't have to keep logging in myself to
-                check. It runs on a schedule, and it never sends the same
-                notification twice.
+                file, a grade &mdash; so I don&rsquo;t have to keep logging in to check.
               </p>
+              <ul class="pcard-stack">
+                <li class="stack-chip" title="Python">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" role="img" aria-label="Python"><rect x="3.2" y="3.2" width="8.6" height="8.6" rx="2.6"/><rect x="12.2" y="12.2" width="8.6" height="8.6" rx="2.6"/><path d="M11.8 8.4h2.6a2 2 0 0 1 2 2v1.8"/></svg>
+                </li>
+                <li class="stack-chip" title="SQLite">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" role="img" aria-label="SQLite"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg>
+                </li>
+                <li class="stack-chip" title="Git">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" role="img" aria-label="Git"><circle cx="6.5" cy="5.8" r="2.4"/><circle cx="6.5" cy="18.2" r="2.4"/><circle cx="17.5" cy="9.5" r="2.4"/><path d="M6.5 8.2v7.6"/><path d="M17.5 11.9c0 3.2-2.4 4.4-5.6 4.9"/></svg>
+                </li>
+              </ul>
+            </div>
+
+            <div class="pcard-foot">
+              <span class="pcard-state">No live url yet</span>
             </div>
           </article>
 
-          <article class="project reveal">
-            <img src="images/project-placeholder.svg" alt="" class="project-thumb" aria-hidden="true">
-            <div class="project-body">
-              <p class="project-index">[ PROJECT_04 ]</p>
-              <div class="project-top">
-                <h2>This Portfolio</h2>
-                <div class="project-meta">
-                  <div class="tag-row project-tags">
-                    <span class="tag">HTML</span>
-                    <span class="tag">CSS</span>
-                    <span class="tag">JavaScript</span>
-                  </div>
-                  <span class="badge" data-state="done">Done</span>
-                </div>
+          <!-- ---------- 04 ---------- -->
+          <article class="pcard reveal">
+            <div class="pcard-bar">
+              <span class="pcard-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="pcard-path">projects/this-portfolio</span>
+            </div>
+
+            <div class="pcard-media">
+              <img src="images/portfolio-16x9.png" alt="" class="pcard-shot" aria-hidden="true">
+            </div>
+
+            <div class="pcard-body">
+              <div class="pcard-head">
+                <h3 class="pcard-title">This Portfolio</h3>
+                <span class="badge" data-state="done">Done</span>
               </div>
-              <p>
+              <p class="pcard-role">Front-End Developer</p>
+              <p class="pcard-desc">
                 This site. Plain HTML, CSS and JavaScript, with no framework and
-                no build step. I wrote it by hand so that I would understand how
-                the parts fit together.
+                no build step. I wrote it by hand to understand how the parts fit
+                together.
               </p>
+              <ul class="pcard-stack">
+                <li class="stack-chip" title="HTML">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="HTML"><path d="M8.5 7.5 4 12l4.5 4.5"/><path d="M15.5 7.5 20 12l-4.5 4.5"/><path d="M13.6 5.5 10.4 18.5"/></svg>
+                </li>
+                <li class="stack-chip" title="CSS">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" role="img" aria-label="CSS"><path d="M9.6 3.5 7.6 20.5"/><path d="M16.4 3.5 14.4 20.5"/><path d="M4 9.2h16"/><path d="M3.4 15h16"/></svg>
+                </li>
+                <li class="stack-chip" title="JavaScript">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" role="img" aria-label="JavaScript"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7.5 15.5V9h2M7.5 12.2h1.8M13.5 9.2a2.6 2.6 0 0 1 3 2.4v1.6a1.6 1.6 0 0 1-3 0"/></svg>
+                </li>
+              </ul>
+            </div>
+
+            <div class="pcard-foot">
+              <span class="pcard-state">No live url yet</span>
             </div>
           </article>
 
-          <article class="project reveal">
-            <img src="images/project-placeholder.svg" alt="" class="project-thumb" aria-hidden="true">
-            <div class="project-body">
-              <p class="project-index">[ PROJECT_05 ]</p>
-              <div class="project-top">
-                <h2>Personal OS</h2>
-                <div class="project-meta">
-                  <div class="tag-row project-tags">
-                    <span class="tag">JavaScript</span>
-                    <span class="tag">REST API</span>
-                    <span class="tag">Python</span>
-                  </div>
-                  <span class="badge">Planned</span>
-                </div>
+          <!-- ---------- 05 ---------- -->
+          <article class="pcard reveal">
+            <div class="pcard-bar">
+              <span class="pcard-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="pcard-path">projects/personal-os</span>
+            </div>
+
+            <div class="pcard-media">
+              <img src="images/personalos-16x9.png" alt="" class="pcard-shot" aria-hidden="true">
+            </div>
+
+            <div class="pcard-body">
+              <div class="pcard-head">
+                <h3 class="pcard-title">Personal OS</h3>
+                <span class="badge">Planned</span>
               </div>
-              <p>
-                A personal dashboard: one screen for what I am building, what is
-                due, and what is running at home. Notes, files and services each
-                get their own panel, and it all loads from a single page. Still
-                planned &mdash; it is mostly so I can get better at working with
-                APIs and with data that loads asynchronously.
+              <p class="pcard-role">Dashboard &amp; API Integration</p>
+              <p class="pcard-desc">
+                A personal dashboard: one screen for what I&rsquo;m building, what is
+                due, and what is running at home. Notes, files and services each get
+                their own panel, loading from a single page.
               </p>
+              <ul class="pcard-stack">
+                <li class="stack-chip" title="JavaScript">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" role="img" aria-label="JavaScript"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7.5 15.5V9h2M7.5 12.2h1.8M13.5 9.2a2.6 2.6 0 0 1 3 2.4v1.6a1.6 1.6 0 0 1-3 0"/></svg>
+                </li>
+                <li class="stack-chip" title="REST API">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" role="img" aria-label="REST API"><path d="M9 4.5C7 4.5 7 8 7 10v4c0 2 0 5.5-2 5.5"/><path d="M15 4.5c2 0 2 3.5 2 5.5v4c0 2 0 5.5 2 5.5"/></svg>
+                </li>
+                <li class="stack-chip" title="Python">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" role="img" aria-label="Python"><rect x="3.2" y="3.2" width="8.6" height="8.6" rx="2.6"/><rect x="12.2" y="12.2" width="8.6" height="8.6" rx="2.6"/><path d="M11.8 8.4h2.6a2 2 0 0 1 2 2v1.8"/></svg>
+                </li>
+              </ul>
+            </div>
+
+            <div class="pcard-foot">
+              <span class="pcard-state">No live url yet</span>
             </div>
           </article>
-        </section>
+
+        </div>
 
       </div>
 
