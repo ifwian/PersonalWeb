@@ -923,17 +923,10 @@ code {
    icons are inline SVG that inherits currentColor, which is why they
    are greyscale too: the palette has no colour to tint them with. */
 
-/* The header above the grid: the "03 - PROJECTS" tracker, the
-   lowercase title, and the italic line underneath. */
+/* The header above the grid: the ~/projects breadcrumb, the big
+   lowercase title, and the line underneath. */
 .pgrid-head {
   margin-bottom: 1.15rem;
-}
-
-/* The tracker line. It just reuses .section-title (uppercase, widely
-   tracked, with a hairline under it) so it matches the numbered
-   section headings elsewhere on the site. */
-.pgrid-head .section-title {
-  margin-bottom: 0.8rem;
 }
 
 /* The lowercase display title. Same weight and tight tracking as
@@ -948,11 +941,10 @@ code {
   margin-bottom: 0.4rem;
 }
 
-/* The italic subtitle. Italic is the one thing on this site that is
-   set in a different style, so it is deliberately reserved for this
-   line. */
+/* The subtitle. Plain roman, like every other paragraph on the site
+   -- it used to be italic, which made it the only slanted line in
+   the whole stylesheet, so it now matches .lede and .pcard-desc. */
 .pgrid-sub {
-  font-style: italic;
   font-size: 0.83rem;
   color: var(--dim);
   max-width: 58ch;
@@ -1272,10 +1264,12 @@ code {
   overflow: hidden;
 }
 
-/* The row of technology icons. This is a <ul> because it is a list
-   of items, and the reset already zeroes the padding on every
-   element, which is what removes the bullets once list-style is
-   cleared. */
+/* The row of technology tags. These are the same .tag pills used on
+   the home page and the skills page, restyled slightly smaller so a
+   row of four fits under a blurb without wrapping.
+
+   It is a <ul> because it is a list of items; list-style: none is
+   what removes the bullets (the reset already zeroes the padding). */
 .pcard-stack {
   display: flex;
   flex-wrap: wrap;
@@ -1284,31 +1278,13 @@ code {
   list-style: none;
 }
 
-/* One icon: a small bordered square holding an 11px SVG.
-
-   The border is what makes it visible on a black card -- an icon on
-   its own would just be a grey shape floating in the dark. Each one
-   carries a title attribute, so hovering gives the full name rather
-   than making you guess from the drawing. */
-.stack-chip {
-  display: grid;
-  place-items: center;
-  width: 21px;
-  height: 21px;
-  border: 1px solid var(--line);
-  border-radius: 3px;
-  color: var(--faint);
-  transition: color 0.2s, border-color 0.2s;
-}
-
-.stack-chip:hover {
-  color: var(--text);
-  border-color: var(--line-2);
-}
-
-.stack-chip svg {
-  width: 11px;
-  height: 11px;
+/* The tighter version of .tag used inside a card. The hover rule is
+   inherited from .tag, so a tag still brightens and gains a white
+   border on hover -- these are links-looking pills but not links,
+   matching how .tag behaves everywhere else on the site. */
+.pcard-stack .tag {
+  font-size: 0.6rem;
+  padding: 0.15rem 0.5rem;
 }
 
 /* The footer: a hairline, then the status line on the left and the
