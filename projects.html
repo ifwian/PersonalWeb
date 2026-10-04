@@ -11,9 +11,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="style.css?v=24">
 </head>
+
 <body>
 
   <!-- Stays off-screen until it is focused, so keyboard users can
@@ -26,15 +26,12 @@
     <button class="side-close" aria-label="Close menu">&#10005;</button>
 
     <!-- The site name at the top of the sidebar, with the Role and
-         Focus lines tucked underneath it.
-         IMPORTANT: each .brand-node must stay on ONE line in this file.
-         The CSS uses white-space: pre so the tree lines up, and a line
-         break here would show up on the page. -->
+         Focus lines tucked underneath it. -->
     <div class="side-brand">
       <span class="brand-mark">MARIANNE.DEV</span>
       <div class="brand-tree">
         <span class="brand-node"><span class="brand-branch">├──</span> Role: <span class="brand-value">CS Student</span></span>
-        <span class="brand-node"><span class="brand-branch">└──</span> Focus: <span class="brand-value">Web &amp; Systems</span></span>
+        <span class="brand-node"><span class="brand-branch">└──</span> Focus: <span class="brand-value">Web & Systems</span></span>
       </div>
     </div>
 
@@ -64,7 +61,6 @@
       <span class="side-foot-label">Elsewhere</span>
       <a href="https://github.com/ifwian" target="_blank" rel="noopener noreferrer">github.com/ifwian</a>
       <a href="https://www.linkedin.com/in/ifwiannn/" target="_blank" rel="noopener noreferrer">linkedin.com/in/ifwiannn</a>
-      <a href="https://www.instagram.com/ifwiannn/" target="_blank" rel="noopener noreferrer">instagram.com/ifwiannn</a>
       <a href="mailto:iandevsu@gmail.com">iandevsu@gmail.com</a>
     </div>
   </aside>
@@ -168,7 +164,7 @@
                 <h3 class="pcard-title">Reservation System</h3>
                 <span class="badge">In progress</span>
               </div>
-              <p class="pcard-role">Frontend &amp; Backend Developer</p>
+              <p class="pcard-role">Frontend & Backend Developer</p>
               <p class="pcard-desc">
                 A reservation system for booking stations at a venue, still being
                 designed in Figma.
@@ -199,7 +195,7 @@
 
             <div class="pcard-body">
               <div class="pcard-head">
-                <h3 class="pcard-title">The Sifted Caf&eacute;</h3>
+                <h3 class="pcard-title">The Sifted Cafe</h3>
                 <span class="badge">In progress</span>
               </div>
               <p class="pcard-role">Frontend Developer</p>
@@ -220,8 +216,8 @@
           </article>
 
           <!-- ---------- 03 ----------
-               No screenshot yet, so this one shows a large Python
-               mark on the dotted panel instead. -->
+             No screenshot yet, so this one shows a large Python
+             mark on the dotted panel instead. -->
           <article class="pcard reveal">
             <div class="pcard-bar">
               <span class="pcard-dots" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -229,9 +225,7 @@
             </div>
 
             <div class="pcard-media">
-              <span class="pcard-mark">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" role="img" aria-label="Python"><rect x="3.2" y="3.2" width="8.6" height="8.6" rx="2.6"/><rect x="12.2" y="12.2" width="8.6" height="8.6" rx="2.6"/><path d="M11.8 8.4h2.6a2 2 0 0 1 2 2v1.8"/></svg>
-              </span>
+              <img src="images/lmsnotifier.png" alt="" class="pcard-shot" aria-hidden="true">
             </div>
 
             <div class="pcard-body">
@@ -239,7 +233,7 @@
                 <h3 class="pcard-title">LMS Notifier</h3>
                 <span class="badge">In progress</span>
               </div>
-              <p class="pcard-role">Automation &amp; Scripting</p>
+              <p class="pcard-role">Automation & Scripting</p>
               <p class="pcard-desc">
                 A Python script that checks the learning platform I use for class
                 and tells me when something new appears &mdash; an announcement, a
@@ -291,40 +285,6 @@
             </div>
           </article>
 
-          <!-- ---------- 05 ---------- -->
-          <article class="pcard reveal">
-            <div class="pcard-bar">
-              <span class="pcard-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span class="pcard-path">projects/personal-os</span>
-            </div>
-
-            <div class="pcard-media">
-              <img src="images/personalos-16x9.png" alt="" class="pcard-shot" aria-hidden="true">
-            </div>
-
-            <div class="pcard-body">
-              <div class="pcard-head">
-                <h3 class="pcard-title">Personal OS</h3>
-                <span class="badge">Planned</span>
-              </div>
-              <p class="pcard-role">Dashboard &amp; API Integration</p>
-              <p class="pcard-desc">
-                A personal dashboard: one screen for what I&rsquo;m building, what is
-                due, and what is running at home. Notes, files and services each get
-                their own panel, loading from a single page.
-              </p>
-              <ul class="pcard-stack">
-                <li class="tag">JavaScript</li>
-                <li class="tag">REST API</li>
-                <li class="tag">Python</li>
-              </ul>
-            </div>
-
-            <div class="pcard-foot">
-              <span class="pcard-state">No live url yet</span>
-            </div>
-          </article>
-
         </div>
 
       </div>
@@ -336,6 +296,8 @@
     </div>
   </main>
 
+  <!-- One script for the whole site. It is loaded at the end of the
+       body so the HTML is already parsed by the time it runs. -->
   <script src="script.js"></script>
 </body>
 </html>

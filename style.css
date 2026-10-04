@@ -1,46 +1,3 @@
-/* ============================================================
-   MARIANNE.DEV — main stylesheet
-   ============================================================
-   A plain, hand-written stylesheet. No framework, no build step.
-   Just open any .html file in a browser and it renders.
-
-   How the page is put together:
-     - The <body> is a two-column grid: a fixed sidebar on the
-       left, and the main content panel on the right.
-     - Neither the page nor the body scrolls. The sidebar and the
-       main panel each scroll on their own.
-     - On narrow screens the sidebar becomes a slide-out drawer
-       and a top bar appears with a hamburger button.
-     - The whole design is black and white. Every colour comes
-       from the custom properties in :root below, so changing the
-       theme means editing that one block.
-
-   TABLE OF CONTENTS
-     1.  Theme variables
-     2.  Reset and base element styles
-     3.  Skip link
-     4.  Sidebar
-     5.  Top bar and mobile drawer
-     6.  Main panel and page wrapper
-     7.  Shared page pieces (titles, sections, cards)
-     8.  Home page
-     9.  Skills page
-     10. Projects page (project cards)
-     11. Gallery page
-     12. Contact page and form
-     13. Footer
-     14. Reveal-on-scroll animation
-     15. Small screens
-   ============================================================ */
-
-
-/* ------------------------------------------------------------
-   1. THEME VARIABLES
-   ------------------------------------------------------------
-   Custom properties (the --name part) are just named values we
-   can reuse. Change a value here and every place that uses
-   var(--name) updates too. */
-
 :root {
   /* Colours — the entire palette. Greys only, no colour. */
   --bg: #000000;         /* page background */
@@ -66,12 +23,6 @@
 }
 
 
-/* ------------------------------------------------------------
-   2. RESET AND BASE ELEMENT STYLES
-   ------------------------------------------------------------
-   The star (*) selector matches every element. This block removes
-   the default browser spacing so the layout is predictable. */
-
 * {
   margin: 0;
   padding: 0;
@@ -82,9 +33,7 @@ html {
   height: 100%;
 }
 
-/* Two columns: the sidebar, then everything else. The
-   minmax(0, 1fr) means the right column takes the leftover width
-   and is allowed to shrink below its content size. */
+
 body {
   font-family: var(--font);
   font-size: 15px;
@@ -122,25 +71,18 @@ button {
   cursor: pointer;
 }
 
-/* Keyboard users get a visible outline. Mouse users don't see it
-   because this only applies on :focus-visible. */
+
 :focus-visible {
   outline: 2px solid var(--text);
   outline-offset: 2px;
 }
 
-/* Highlighted text (double-click a word). */
+
 ::selection {
   background: var(--text);
   color: var(--bg);
 }
 
-
-/* ------------------------------------------------------------
-   3. SKIP LINK
-   ------------------------------------------------------------
-   Off-screen until it is focused, so keyboard and screen-reader
-   users can jump past the sidebar straight to the content. */
 
 .skip-link {
   position: absolute;
@@ -158,11 +100,6 @@ button {
   top: 0.5rem;
 }
 
-
-/* ------------------------------------------------------------
-   4. SIDEBAR
-   ------------------------------------------------------------ */
-
 .sidebar {
   position: relative;
   height: 100%;
@@ -178,14 +115,11 @@ button {
   scrollbar-color: var(--line-2) var(--bg);
 }
 
-/* Only used in the mobile drawer. Once the drawer slides over the
-   top bar it covers the hamburger button that opened it, so it
-   needs a close button of its own. Hidden on desktop. */
 .side-close {
   display: none;
 }
 
-/* Firefox scrollbar. */
+
 .sidebar::-webkit-scrollbar {
   width: 6px;
 }
@@ -195,11 +129,6 @@ button {
   border-radius: 999px;
 }
 
-/* --- brand block --- */
-
-/* The site name at the top of the sidebar, with the Role and Focus
-   lines tucked underneath it. Deliberately no border or background
-   here: these are quiet labels, not a panel. */
 .side-brand {
   display: flex;
   flex-direction: column;
@@ -214,16 +143,6 @@ button {
   letter-spacing: -0.01em;
 }
 
-/* The two lines under the site name, shaped like a file tree:
-
-       ├── Role: CS Student
-       └── Focus: Web & Systems
-
-   white-space: pre stops the browser collapsing the spaces that line
-   the tree up. That is also why each .brand-node must stay on ONE
-   line in the HTML - a line break in the source would show up on
-   the page. Nothing here has a border or a background, so the lines
-   read as plain quiet text. */
 .brand-tree {
   display: flex;
   flex-direction: column;
@@ -237,13 +156,12 @@ button {
   color: var(--faint);
 }
 
-/* The ├── and └── connectors, in the darkest grey so they draw the
-   shape without competing with the words beside them. */
+
 .brand-branch {
   color: var(--line-2);
 }
 
-/* The value after the label, e.g. "CS Student". */
+
 .brand-value {
   color: var(--text);
 }
@@ -255,9 +173,7 @@ button {
   flex-direction: column;
 }
 
-/* One nav item: a number, then a label. The 2px transparent
-   border on the left is the space the active-page white bar
-   later fills in, so hovering never shifts the text sideways. */
+
 .side-link {
   display: flex;
   align-items: baseline;
@@ -281,8 +197,7 @@ button {
   transition: color 0.18s;
 }
 
-/* On hover the number brightens slightly, so the row reads as one
-   unit instead of the label alone lighting up. */
+
 .side-link:hover .side-num {
   color: var(--faint);
 }
@@ -291,9 +206,7 @@ button {
   flex: 1;
 }
 
-/* The page you are currently on. Each page's HTML marks its own
-   link with aria-current="page", so this highlights itself with
-   no JavaScript. */
+
 .side-link[aria-current="page"] {
   color: var(--text);
   background: var(--panel);
@@ -304,10 +217,7 @@ button {
   color: var(--text);
 }
 
-/* --- social links at the bottom --- */
 
-/* margin-top: auto pushes this to the bottom of the sidebar
-   because everything above it is a flex item. */
 .side-foot {
   margin-top: auto;
   padding-top: 1.4rem;
@@ -338,7 +248,7 @@ button {
   color: var(--text);
 }
 
-/* A ">" prompt in front of every social link. */
+
 .side-foot a::before {
   content: ">";
   color: var(--line-2);
@@ -349,11 +259,7 @@ button {
 }
 
 
-/* ------------------------------------------------------------
-   5. TOP BAR AND MOBILE DRAWER
-   ------------------------------------------------------------
-   These three rules just hide the mobile-only pieces on desktop.
-   They are turned on again in section 15 (Small screens). */
+
 
 .topbar {
   display: none;
@@ -364,11 +270,7 @@ button {
 }
 
 
-/* ------------------------------------------------------------
-   6. MAIN PANEL AND PAGE WRAPPER
-   ------------------------------------------------------------ */
 
-/* The scrolling area on the right. */
 .main {
   position: relative;
   height: 100%;
@@ -400,35 +302,23 @@ button {
   padding: 3.25rem 0 4.5rem;
 }
 
-/* Centres the content and stops it getting too wide to read.
-   The 4rem is the space kept free at each edge. */
 .wrap {
   width: min(100% - 4rem, 900px);
   margin: 0 auto;
 }
 
-/* The home page gets a wider measure. Its hero is two columns, so
-   a 900px limit would squeeze the text into a narrow strip. */
+
 .page-home .wrap {
   width: min(100% - 4rem, 1040px);
 }
 
-/* The projects page gets a narrower one. Its content is a grid of
-   cards rather than a column of prose, so at the default 900px each
-   card was around 430px wide -- more than a card holding a title, a
-   badge, a short role line and a 3-line blurb needs. The extra room
-   went into the gutter between cards instead of into the cards.
 
-   820px puts each card at roughly 390px, which is enough for the
-   title and badge to sit on one line with room to spare. */
 .page-projects .wrap {
   width: min(100% - 4rem, 820px);
 }
 
 
-/* ------------------------------------------------------------
-   7. SHARED PAGE PIECES
-   ------------------------------------------------------------ */
+
 
 .page-head {
   margin-bottom: 3rem;
@@ -439,16 +329,13 @@ button {
   margin-bottom: 0.9rem;
 }
 
-/* The short intro paragraph under each page title.
-   max-width in "ch" (character) units keeps line length readable
-   regardless of font size. */
+
 .lede {
   color: var(--dim);
   max-width: 62ch;
 }
 
-/* A link inside a paragraph: underlined with a border so it reads
-   as a link without leaving the greyscale palette. */
+
 .lede a {
   color: var(--text);
   border-bottom: 1px solid var(--line-2);
@@ -469,8 +356,7 @@ code {
   padding: 0.1em 0.4em;
 }
 
-/* The small breadcrumb line above a page title, e.g. ~/projects.
-   The "::before" adds the "~/" part so the HTML stays clean. */
+
 .path {
   display: flex;
   align-items: center;
@@ -493,7 +379,7 @@ code {
   margin-bottom: 0;
 }
 
-/* The small uppercase heading above each block of content. */
+
 .section-title {
   font-size: 0.74rem;
   text-transform: uppercase;
@@ -501,18 +387,15 @@ code {
   color: var(--faint);
   padding-bottom: 0.7rem;
   border-bottom: 1px solid var(--line);
-  margin-bottom: 1.5rem;
+  margin-bottom: 2%;
 }
 
-/* The grey "02 —" in front of a numbered section title. Kept on its
-   own rule so the numbers can be left out without touching the
-   title styling. */
+
 .section-index {
   color: var(--line-2);
 }
 
-/* A generic bordered card. Used for the Degree and Certifications
-   blocks on the home page. */
+
 .card {
   display: flex;
   flex-direction: column;
@@ -539,12 +422,7 @@ code {
   font-size: 0.88rem;
 }
 
-/* The `.btn` class is shared by all buttons. Details in section 8. */
 
-
-/* ------------------------------------------------------------
-   8. HOME PAGE
-   ------------------------------------------------------------ */
 
 .hero {
   padding-bottom: 3rem;
@@ -552,13 +430,7 @@ code {
   border-bottom: 1px solid var(--line);
 }
 
-/* Two columns: the photo on the left, the name and text on the
-   right. The left column matches the photo frame exactly, so there
-   is no empty gap beside the image.
 
-   align-items: start lines the two columns up along their top edges,
-   so the photo starts level with the top of the name. Without it the
-   grid would default to stretching, which is not what we want here. */
 .hero-split {
   display: grid;
   grid-template-columns: 200px minmax(0, 1fr);
@@ -573,44 +445,6 @@ code {
   gap: 0.7rem;
 }
 
-/* The frame around the profile photo: a rounded rectangle at 200 x 250,
-   which is a 4:5 portrait shape.
-
-   The photo itself (images/marianneid.png) is 1024 x 1024 — square. So
-   the frame and the picture are NOT the same shape, and the photo is
-   cropped to fit. That cropping is done by object-fit: cover on .avatar
-   below: a square image dropped into a box that is taller than it is
-   wide loses a slice off each side. Here that only trims empty white
-   background either side of the shoulders, so nothing important is cut.
-
-   aspect-ratio: 4 / 5 is what holds the 4:5 shape. Saying it this way
-   instead of using a fixed height means the height is derived from the
-   width, so the frame keeps its proportions even if the 200px is ever
-   changed, and the photo can never end up squashed to fit some other
-   ratio. The rendered size is identical to the height: 250px it
-   replaced, because the reset sets box-sizing: border-box, which makes
-   aspect-ratio measure the border box. (The 1px border then leaves the
-   inner box the <img> fills at 198 x 248.)
-
-   The photo is well above the resolution the frame needs — 1024px of
-   source in a 198px box — so it stays sharp on high-DPI screens. If it
-   ever looks soft, the fix is a higher-resolution source file, not CSS.
-
-   border-radius: 12px takes the sharp corners off, and overflow: hidden
-   is what makes those rounded corners clip the photo as well, not just
-   the outline.
-
-   The frame and the photo are two separate things on purpose: this
-   div owns the size, the outline and the corners, and the <img> inside
-   it fills whatever space it is given, so the picture can never
-   stretch or squash the frame.
-
-   The border is 1px solid white, the same weight as the borders
-   elsewhere on the site but the light colour instead of var(--line).
-   var(--text) is #ffffff.
-
-   The hero-split grid column above is the same width, so there is no
-   empty gap beside the image. Keep the two numbers the same. */
 .avatar-frame {
   width: 200px;
   aspect-ratio: 4 / 5;
@@ -620,24 +454,17 @@ code {
   overflow: hidden;
 }
 
-/* The photo inside the frame. It is given the full inner box of the
-   frame — width and height both 100% — and object-fit: cover then
-   scales it up to fill that box while keeping its own proportions,
-   cropping the overflow. That is the pair that stops the picture being
-   stretched: 100% decides how much room it gets, cover decides how it
-   fills that room. object-position: center keeps the crop even on both
-   sides rather than favouring one. */
+
 .avatar {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
+  image-rendering: high-quality;
 }
 
-/* The small caption under the photo. Uppercased by CSS, so the text
-   in the HTML stays lowercase. text-align: center centres it under
-   the square frame rather than lining it up with the left edge. */
+
 .hero-media-tag {
   font-size: 0.66rem;
   text-transform: uppercase;
@@ -646,8 +473,7 @@ code {
   color: var(--faint);
 }
 
-/* min-width: 0 lets the text column shrink instead of forcing the
-   grid wider than the screen. */
+
 .hero-body {
   min-width: 0;
 }
@@ -669,12 +495,7 @@ code {
   gap: 0.75rem;
 }
 
-/* --- buttons --- */
 
-/* Every button on the site uses this one class.
-   Normal state: black fill, hairline border, white text. The
-   border is what makes a black button visible on a black page.
-   Hover state: flips to a solid white block with black text. */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -696,11 +517,7 @@ code {
   transform: translateY(-1px);
 }
 
-/* --- "At a glance" grid --- */
 
-/* A row of small labelled boxes: a key (small caps), a value
-   (large), and an optional note. auto-fit + minmax makes the row
-   reflow into as many equal columns as fit. */
 .fact-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -736,20 +553,7 @@ code {
   color: var(--dim);
 }
 
-/* --- tree cards (role & focus, stack & tools, currently) --- */
 
-/* One component, used three times on the home page. Each card has a
-   small grey title bar across the top, then a few lines of text
-   arranged like a file tree:
-
-       ├── Role: CS Student
-       └── Tools: Git
-
-   The box, the title bar and the lines are all plain elements. The
-   only trick is white-space: pre on .tree-line, which stops the
-   browser from collapsing the spaces that line the tree up. That is
-   also why every .tree-line must stay on ONE line in the HTML - a
-   line break in the source would show up in the output. */
 .tree-card {
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -768,12 +572,12 @@ code {
   color: var(--faint);
 }
 
-/* The box the lines sit in. */
+
 .tree-card-body {
   padding: 0.85rem 0.9rem;
 }
 
-/* One line: the connector, the label, then the value. */
+
 .tree-line {
   white-space: pre;
   font-size: 0.78rem;
@@ -781,20 +585,17 @@ code {
   color: var(--dim);
 }
 
-/* The ├── and └── connectors, in the darkest grey so they draw the
-   shape without competing with the words. */
+
 .tree-branch {
   color: var(--line-2);
 }
 
-/* The label before the colon, e.g. "Role" or "Languages". */
+
 .tree-key {
   color: var(--text);
   font-weight: 700;
 }
 
-/* A heading in the same style as .section-title but sitting
-   inside a section, so it carries its own top margin. */
 .sub-title {
   font-size: 0.74rem;
   text-transform: uppercase;
@@ -805,7 +606,7 @@ code {
   margin: 2rem 0 1.25rem;
 }
 
-/* --- "Background" cards --- */
+
 
 .info-grid {
   display: grid;
@@ -813,15 +614,14 @@ code {
   gap: var(--gap);
 }
 
-/* The subtitle line on a card: the one bold line under the title. */
+
 .fact-what {
   font-weight: 700;
   font-size: 0.9rem;
   margin: 0.15rem 0;
 }
 
-/* The short note under a card's subtitle. The hairline above it
-   keeps it a clear step below. */
+
 .fact-note-text {
   font-size: 0.82rem;
   color: var(--dim);
